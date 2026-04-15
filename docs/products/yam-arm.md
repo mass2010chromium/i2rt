@@ -15,11 +15,11 @@ The **YAM Arm** is the follower/manipulation arm in the YAM family — a 6-DOF, 
 <div class="product-gallery">
   <figure>
     <img :src="withBase('/images/yam-standard/YAM-ST-GP-2.webp')" alt="YAM Arm front view" />
-    <figcaption>YAM Arm — front view</figcaption>
+    
   </figure>
   <figure>
     <img :src="withBase('/images/yam-standard/YAM-ST-GP-1.webp')" alt="YAM Arm 3/4 view" />
-    <figcaption>YAM Arm — 3/4 view showing all six joints, base plate, and crank gripper</figcaption>
+    
   </figure>
 </div>
 

@@ -16,7 +16,7 @@ import { withBase } from 'vitepress'
 <div class="product-gallery">
   <figure>
     <img :src="withBase('/images/flow_base.webp')"  alt="Flow Base standalone" />
-    <figcaption>Flow Base — standalone overview showing four omni wheels, top mounting plate, and E-stop</figcaption>
+    
   </figure>
 </div>
 
@@ -53,11 +53,11 @@ import { withBase } from 'vitepress'
 <div class="product-gallery">
   <figure>
     <img :src="withBase('/images/flow_base_panel.webp')"  alt="Flow Base control panel" />
-    <figcaption>Flow Base control panel — E-stop, CAN selector switch, and Raspberry Pi display</figcaption>
+    
   </figure>
   <figure>
     <img :src="withBase('/images/remote.webp')"  alt="Flow Base remote controller" />
-    <figcaption>Remote controller — joystick for manual operation</figcaption>
+    
   </figure>
 </div>
 

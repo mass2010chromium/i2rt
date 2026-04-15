@@ -15,15 +15,15 @@ The **YAM Leader** is the operator-side arm used for teleoperation. It is kinema
 <div class="product-gallery">
   <figure>
     <img :src="withBase('/images/yam-leader/YAM-ST-Leader-2.webp')"  alt="YAM Leader Arm front view" />
-    <figcaption>YAM Leader — front view with teaching handle</figcaption>
+    
   </figure>
   <figure>
     <img :src="withBase('/images/yam-leader/YAM-ST-Leader-1.webp')"  alt="YAM Leader Arm side view" />
-    <figcaption>YAM Leader — side view</figcaption>
+    
   </figure>
   <figure>
     <img :src="withBase('/images/yam-leader/YAM-ST-Leader-3.webp')"  alt="YAM Leader Arm 3/4 view" />
-    <figcaption>YAM Leader — 3/4 view</figcaption>
+    
   </figure>
 </div>
 
@@ -42,7 +42,7 @@ The **YAM Leader** is the operator-side arm used for teleoperation. It is kinema
 <div class="product-gallery">
   <figure>
     <img :src="withBase('/images/yam-leader/YAM-ST-Leader-4.webp')"  alt="YAM teaching handle close-up" />
-    <figcaption>Close-up of yam_teaching_handle: trigger, two programmable top buttons, and cable exit</figcaption>
+    
   </figure>
 </div>
 

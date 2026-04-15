@@ -15,11 +15,11 @@ import { withBase } from 'vitepress'
 <div class="product-gallery">
   <figure>
     <img :src="withBase('/images/linear_rail.webp')"  alt="Linear Bot full system" />
-    <figcaption>Linear Bot — Flow Base with vertical linear rail lift</figcaption>
+    
   </figure>
   <figure>
     <img :src="withBase('/images/yam-mobile/YAM-Mobile-only.webp')"  alt="Linear Bot mobile frame" />
-    <figcaption>Linear Bot mobile frame — vertical rail, cable chain, and wheel base</figcaption>
+    
   </figure>
 </div>
 
@@ -63,7 +63,7 @@ The three subsystems are controlled together through a unified Python API, givin
 <div class="product-gallery">
   <figure>
     <img :src="withBase('/images/yam-mobile/YAM-Mobile-only.webp')"  alt="Linear Bot frame close-up" />
-    <figcaption>Linear rail mechanism — motor mount, rail carriage, cable chain, and limit switch assembly</figcaption>
+    
   </figure>
 </div>
 
