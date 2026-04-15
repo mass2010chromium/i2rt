@@ -94,7 +94,7 @@ For full bimanual setup see [Bimanual Teleoperation](/examples/bimanual-teleoper
 ## Videos
 
 <video controls style="width:100%;border-radius:8px;margin:16px 0 8px">
-  <source :src="withBase('/images/yam-leader/YAM-ST-Leader-video.mov')" type="video/mp4" />
+  <source :src="withBase('/images/yam-leader/YAM-ST-Leader-video.mp4')" type="video/mp4" />
 </video>
 
 *Operator using two YAM Leader arms to control two YAM follower arms — picking and placing objects. Shows trigger use for gripper control.*

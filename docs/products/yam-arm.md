@@ -73,7 +73,7 @@ i2rt/robot_models/arm/yam/
 />
 
 <video controls style="width:100%;border-radius:8px;margin:16px 0 8px">
-  <source :src="withBase('/images/yam-standard/YAM-ST-GP-video.mov')" type="video/mp4" />
+  <source :src="withBase('/images/yam-standard/YAM-ST-GP-video.mp4')" type="video/mp4" />
 </video>
 
 *YAM in zero-gravity mode — operator guides the arm by hand through a full range of motion. Demonstrates backdrivability.*
