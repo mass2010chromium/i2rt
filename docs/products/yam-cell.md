@@ -1,3 +1,7 @@
+<script setup>
+import { withBase } from 'vitepress'
+</script>
+
 # YAM Cell
 
 <div class="product-badges">
@@ -8,10 +12,35 @@
 
 **YAM Cell** is a complete bimanual teleoperation workstation built around two YAM leader arms and two YAM follower arms. It is designed for collecting high-quality manipulation demonstrations for training embodied AI models.
 
-<MediaPlaceholder
-  type="photo"
-  description="Full YAM Cell setup: four arms on a tabletop, two leader arms facing the operator, two follower arms in the task workspace. Overhead or 3/4 angle shot."
-/>
+<div class="product-gallery">
+  <figure>
+    <img :src="withBase('/images/yam-station/DS-ST-1.png')"  alt="YAM Cell full workstation" />
+    <figcaption>YAM Cell full workstation with monitor and four arms</figcaption>
+  </figure>
+  <figure>
+    <img :src="withBase('/images/yam-station/DS-ST-2.jpg')"  alt="YAM Cell side view" />
+    <figcaption>YAM Cell — side view</figcaption>
+  </figure>
+  <figure>
+    <img :src="withBase('/images/yam-station/DS-ST-3.jpg')"  alt="YAM Cell detail" />
+    <figcaption>YAM Cell — workspace detail</figcaption>
+  </figure>
+</div>
+
+*Full YAM Cell setup: four arms on a tabletop, two leader arms facing the operator, two follower arms in the task workspace.*
+
+#### Mobile Variant
+
+<div class="product-gallery">
+  <figure>
+    <img :src="withBase('/images/yam-mobile/YAM-Mobile-1.JPG')"  alt="YAM Cell Mobile system" />
+    <figcaption>YAM Cell Mobile — four arms on a mobile aluminum frame</figcaption>
+  </figure>
+  <figure>
+    <img :src="withBase('/images/yam-mobile/YAM-Mobile-2.PNG')"  alt="YAM Cell Mobile 3/4 view" />
+    <figcaption>YAM Cell Mobile — 3/4 view</figcaption>
+  </figure>
+</div>
 
 ## System Overview
 
@@ -50,10 +79,11 @@ Each arm requires a dedicated CAN channel. Assign persistent names using udev ru
   description="Operator sitting in front of two YAM leader arms, controlling two follower arms picking objects. Side-by-side view of leader and follower workspace. 1–2 min demo."
 />
 
-<MediaPlaceholder
-  type="video"
-  description="Close-up of the teaching handle trigger being used to open/close the follower gripper while the arm is in motion."
-/>
+<video controls style="width:100%;border-radius:8px;margin:16px 0 8px">
+  <source :src="withBase('/images/yam-station/DS-ST.MOV')" type="video/mp4" />
+</video>
+
+*Close-up of the teaching handle trigger being used to open/close the follower gripper while the arm is in motion.*
 
 ## Quick Start
 
@@ -122,4 +152,8 @@ from i2rt.robots.motor_chain_robot import get_yam_robot
 .product-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 24px; }
 .product-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid; }
 .product-badge.available { color: #4CCFB0; border-color: rgba(76,207,176,0.4); background: rgba(76,207,176,0.08); }
+.product-gallery { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0 8px; }
+.product-gallery figure { flex: 1 1 220px; margin: 0; }
+.product-gallery img { width: 100%; border-radius: 8px; }
+.product-gallery figcaption { font-size: 0.8rem; color: var(--vp-c-text-2); text-align: center; margin-top: 6px; }
 </style>

@@ -1,3 +1,7 @@
+<script setup>
+import { withBase } from 'vitepress'
+</script>
+
 # YAM Arm
 
 <div class="product-badges">
@@ -8,10 +12,18 @@
 
 The **YAM Arm** is the follower/manipulation arm in the YAM family — a 6-DOF, CAN bus–driven manipulator built for real-world research and embodied AI data collection. Pair it with a [YAM Leader](/products/yam-leader) for teleoperation, or run it standalone with the Python SDK.
 
-<MediaPlaceholder
-  type="photo"
-  description="YAM arm standalone on a white tabletop — front and 3/4 views showing all six joints, base plate, and default linear gripper."
-/>
+<div class="product-gallery">
+  <figure>
+    <img :src="withBase('/images/yam-standard/YAM-ST-GP-2.PNG')" alt="YAM Arm front view" />
+    <figcaption>YAM Arm — front view</figcaption>
+  </figure>
+  <figure>
+    <img :src="withBase('/images/yam-standard/YAM-ST-GP-1.PNG')" alt="YAM Arm 3/4 view" />
+    <figcaption>YAM Arm — 3/4 view showing all six joints, base plate, and crank gripper</figcaption>
+  </figure>
+</div>
+
+*YAM arm standalone on a white tabletop — front and 3/4 views showing all six joints, base plate, and default linear gripper.*
 
 ## Models
 
@@ -60,10 +72,11 @@ i2rt/robot_models/arm/yam/
   description="YAM arm performing a pick-and-place task on a cluttered tabletop. Close-up of gripper engagement. 30–60 seconds."
 />
 
-<MediaPlaceholder
-  type="video"
-  description="YAM in zero-gravity mode — operator guides the arm by hand through a full range of motion. Demonstrates backdrivability."
-/>
+<video controls style="width:100%;border-radius:8px;margin:16px 0 8px">
+  <source :src="withBase('/images/yam-standard/YAM-ST-GP-video.mov')" type="video/mp4" />
+</video>
+
+*YAM in zero-gravity mode — operator guides the arm by hand through a full range of motion. Demonstrates backdrivability.*
 
 ## Quick Start
 
@@ -91,4 +104,8 @@ robot.command_joint_pos(np.zeros(6))
 .product-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 24px; }
 .product-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid; }
 .product-badge.available { color: #4CCFB0; border-color: rgba(76,207,176,0.4); background: rgba(76,207,176,0.08); }
+.product-gallery { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0 8px; }
+.product-gallery figure { flex: 1 1 220px; margin: 0; }
+.product-gallery img { width: 100%; border-radius: 8px; }
+.product-gallery figcaption { font-size: 0.8rem; color: var(--vp-c-text-2); text-align: center; margin-top: 6px; }
 </style>

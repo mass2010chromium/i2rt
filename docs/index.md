@@ -2,6 +2,10 @@
 layout: page
 ---
 
+<script setup>
+import { withBase } from 'vitepress'
+</script>
+
 <div class="i2rt-home">
 
 <section class="hero">
@@ -15,8 +19,8 @@ layout: page
       teleoperation-ready, policy-deployment-ready, and battle-tested in the real world.
     </p>
     <div class="hero-actions">
-      <a class="btn-primary" href="/i2rt/getting-started/installation">Get Started →</a>
-      <a class="btn-ghost"   href="/i2rt/products/">Explore Products</a>
+      <a class="btn-primary" :href="withBase('/getting-started/installation')">Get Started →</a>
+      <a class="btn-ghost"   :href="withBase('/products/')">Explore Products</a>
       <a class="btn-ghost"   href="https://github.com/i2rt-robotics/i2rt" target="_blank">GitHub</a>
     </div>
     <div class="hero-chips">
@@ -33,25 +37,25 @@ layout: page
 </section>
 
 <section class="features">
-  <a class="feat" href="/i2rt/products/yam">
+  <a class="feat" :href="withBase('/products/yam')">
     <span class="feat-icon">🦾</span>
     <h3>YAM Arm Family</h3>
     <p>Low-cost, low-inertia 6-DOF arms designed for AI training and teleoperation — four tiers from research to production.</p>
     <span class="feat-link">Learn more →</span>
   </a>
-  <a class="feat" href="/i2rt/products/flow-base">
+  <a class="feat" :href="withBase('/products/flow-base')">
     <span class="feat-icon">🛞</span>
     <h3>Flow Base</h3>
     <p>Omnidirectional holonomic platform with on-board Pi, remote control, and full Python API.</p>
     <span class="feat-link">Learn more →</span>
   </a>
-  <a class="feat" href="/i2rt/products/yam-cell">
+  <a class="feat" :href="withBase('/products/yam-cell')">
     <span class="feat-icon">📡</span>
     <h3>Teleoperation Ready</h3>
     <p>Bilateral leader-follower teleop. YAM Cell collects bimanual demonstrations for embodied AI.</p>
     <span class="feat-link">Learn more →</span>
   </a>
-  <a class="feat" href="/i2rt/getting-started/quick-start">
+  <a class="feat" :href="withBase('/getting-started/quick-start')">
     <span class="feat-icon">🐍</span>
     <h3>Python-First SDK</h3>
     <p>Plug-and-play API: gravity compensation, PD control, trajectory recording, and simulation.</p>
@@ -62,7 +66,7 @@ layout: page
 <section class="products">
   <h2 class="section-title">Product Family</h2>
   <div class="product-grid">
-    <a class="pcard" href="/i2rt/products/yam">
+    <a class="pcard" :href="withBase('/products/yam')">
       <span class="pcard-icon">🦾</span>
       <div>
         <h3>YAM Series</h3>
@@ -70,7 +74,7 @@ layout: page
         <span class="pcard-price">From $2,999</span>
       </div>
     </a>
-    <a class="pcard" href="/i2rt/products/yam-cell">
+    <a class="pcard" :href="withBase('/products/yam-cell')">
       <span class="pcard-icon">🔬</span>
       <div>
         <h3>YAM Cell</h3>
@@ -78,7 +82,7 @@ layout: page
         <span class="pcard-badge">Python SDK</span>
       </div>
     </a>
-    <a class="pcard" href="/i2rt/products/yam-box">
+    <a class="pcard" :href="withBase('/products/yam-box')">
       <span class="pcard-icon">📦</span>
       <div>
         <h3>YAM Box</h3>
@@ -86,14 +90,14 @@ layout: page
         <span class="pcard-badge muted">Code Coming Soon</span>
       </div>
     </a>
-    <a class="pcard" href="/i2rt/products/flow-base">
+    <a class="pcard" :href="withBase('/products/flow-base')">
       <span class="pcard-icon">🛞</span>
       <div>
         <h3>Flow Base</h3>
         <p>Omnidirectional mobile base with Python API and remote.</p>
       </div>
     </a>
-    <a class="pcard" href="/i2rt/products/linear-bot">
+    <a class="pcard" :href="withBase('/products/linear-bot')">
       <span class="pcard-icon">📏</span>
       <div>
         <h3>Linear Bot</h3>
@@ -108,7 +112,7 @@ layout: page
   <div class="qs-text">
     <h2>Up and running in minutes</h2>
     <p>Install the Python SDK, plug in the CAN adapter, and start controlling the arm in a single script.</p>
-    <a class="btn-primary" href="/i2rt/getting-started/quick-start">Full Quick Start →</a>
+    <a class="btn-primary" :href="withBase('/getting-started/quick-start')">Full Quick Start →</a>
   </div>
   <div class="qs-code">
 
@@ -130,7 +134,7 @@ robot.command_joint_pos(np.zeros(6))
 </section>
 
 <section class="cta-row">
-  <a class="btn-primary" href="/i2rt/getting-started/installation">Get Started →</a>
+  <a class="btn-primary" :href="withBase('/getting-started/installation')">Get Started →</a>
   <a class="btn-ghost"   href="https://i2rt.com" target="_blank">i2rt.com</a>
   <a class="btn-ghost"   href="mailto:support@i2rt.com">support@i2rt.com</a>
 </section>

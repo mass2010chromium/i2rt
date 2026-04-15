@@ -1,3 +1,7 @@
+<script setup>
+import { withBase } from 'vitepress'
+</script>
+
 # YAM Arm Series
 
 <div class="product-badges">
@@ -39,10 +43,30 @@
 
 YAM supports four interchangeable end effectors:
 
-<MediaPlaceholder
-  type="photo"
-  description="The three YAM gripper variants shown side by side: crank_4310, linear_3507, and yam_teaching_handle. Macro photo on a dark surface."
-/>
+<div class="product-gallery">
+  <figure>
+    <img :src="withBase('/images/crank-shaft-gripper/GP-4310-CS-1.PNG')"  alt="Crank Shaft Gripper GP-4310-CS front" />
+    <figcaption><code>crank_4310</code> — front view</figcaption>
+  </figure>
+  <figure>
+    <img :src="withBase('/images/crank-shaft-gripper/GP-4310-CS-2.PNG')"  alt="Crank Shaft Gripper GP-4310-CS side" />
+    <figcaption><code>crank_4310</code> — side view</figcaption>
+  </figure>
+  <figure>
+    <img :src="withBase('/images/linear-gripper-4310/GP-4310-CTR-1.JPEG')"  alt="Linear Gripper 4310 front" />
+    <figcaption><code>linear_4310</code> — front view</figcaption>
+  </figure>
+  <figure>
+    <img :src="withBase('/images/linear-gripper-3507/GP-3507-CTR-1.PNG')"  alt="Linear Gripper 3507 front" />
+    <figcaption><code>linear_3507</code> — front view</figcaption>
+  </figure>
+  <figure>
+    <img :src="withBase('/images/flexpoint-adaptive-gripper/GP-4310-FLX-1.PNG')"  alt="FlexPoint Adaptive Gripper front" />
+    <figcaption><code>GP-4310-FLX</code> FlexPoint Adaptive — front view</figcaption>
+  </figure>
+</div>
+
+*The three YAM gripper variants shown side by side: crank_4310, linear_3507, and yam_teaching_handle. Macro photo on a dark surface.*
 
 | Gripper | Description |
 |---------|-------------|
@@ -50,6 +74,7 @@ YAM supports four interchangeable end effectors:
 | `linear_3507` | Lightweight linear gripper with DM3507 motor. Requires starting in the closed position for calibration. |
 | `linear_4310` | Linear gripper with the heavier DM4310 motor. Marginally more gripping force. |
 | `yam_teaching_handle` | Leader arm handle with a trigger for gripper and two programmable buttons. Used for teleoperation. |
+| `flexpoint_4310` | Adaptive compliant gripper engineered for extreme-condition grasping — conforms to irregular, fragile, and complex geometries where rigid grippers fail. |
 
 ## 3D Model
 
@@ -69,10 +94,11 @@ i2rt/robot_models/arm/yam/
   description="YAM arm performing a pick-and-place task on a cluttered tabletop. Close-up of gripper engagement. 30–60 seconds."
 />
 
-<MediaPlaceholder
-  type="video"
-  description="YAM in zero-gravity mode — operator guides the arm by hand through a full range of motion. Emphasizes backdrivability and smooth motion."
-/>
+<video controls style="width:100%;border-radius:8px;margin:16px 0 8px">
+  <source :src="withBase('/images/yam-standard/YAM-ST-GP-video.mov')" type="video/mp4" />
+</video>
+
+*YAM in zero-gravity mode — operator guides the arm by hand through a full range of motion. Emphasizes backdrivability and smooth motion.*
 
 ## Getting Started
 
@@ -103,4 +129,8 @@ Visit [i2rt.com](https://i2rt.com) or contact [sales@i2rt.com](mailto:sales@i2rt
 .product-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 24px; }
 .product-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid; }
 .product-badge.available { color: #4CCFB0; border-color: rgba(76,207,176,0.4); background: rgba(76,207,176,0.08); }
+.product-gallery { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0 8px; }
+.product-gallery figure { flex: 1 1 160px; margin: 0; }
+.product-gallery img { width: 100%; border-radius: 8px; }
+.product-gallery figcaption { font-size: 0.8rem; color: var(--vp-c-text-2); text-align: center; margin-top: 6px; }
 </style>

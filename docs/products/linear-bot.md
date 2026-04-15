@@ -1,3 +1,7 @@
+<script setup>
+import { withBase } from 'vitepress'
+</script>
+
 # Linear Bot
 
 <div class="product-badges">
@@ -8,10 +12,18 @@
 
 **Linear Bot** is the [Flow Base](/products/flow-base) combined with a vertical linear rail actuator. The linear rail adds a height axis to the omnidirectional base, enabling the mounted YAM arm to reach objects at varying heights — from floor-level to shelf-height — without repositioning.
 
-<MediaPlaceholder
-  type="photo"
-  description="Linear Bot full system: Flow Base with vertical linear rail and YAM arm mounted at top. Shot at slight downward angle in a lab or warehouse setting."
-/>
+<div class="product-gallery">
+  <figure>
+    <img :src="withBase('/images/linear_rail.png')"  alt="Linear Bot full system" />
+    <figcaption>Linear Bot — Flow Base with vertical linear rail lift</figcaption>
+  </figure>
+  <figure>
+    <img :src="withBase('/images/yam-mobile/YAM-Mobile-only.PNG')"  alt="Linear Bot mobile frame" />
+    <figcaption>Linear Bot mobile frame — vertical rail, cable chain, and wheel base</figcaption>
+  </figure>
+</div>
+
+*Linear Bot full system: Flow Base with vertical linear rail and YAM arm mounted at top.*
 
 ## System Architecture
 
@@ -49,10 +61,12 @@ The three subsystems are controlled together through a unified Python API, givin
 
 ## Photos & Videos
 
-<MediaPlaceholder
-  type="photo"
-  description="Close-up of the linear rail mechanism: motor mount, rail carriage, cable chain, and limit switch assembly."
-/>
+<div class="product-gallery">
+  <figure>
+    <img :src="withBase('/images/yam-mobile/YAM-Mobile-only.PNG')"  alt="Linear Bot frame close-up" />
+    <figcaption>Linear rail mechanism — motor mount, rail carriage, cable chain, and limit switch assembly</figcaption>
+  </figure>
+</div>
 
 <MediaPlaceholder
   type="video"
@@ -107,4 +121,8 @@ Starting at **$18,999**. Contact [sales@i2rt.com](mailto:sales@i2rt.com) for con
 .product-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 24px; }
 .product-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid; }
 .product-badge.available { color: #4CCFB0; border-color: rgba(76,207,176,0.4); background: rgba(76,207,176,0.08); }
+.product-gallery { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0 8px; }
+.product-gallery figure { flex: 1 1 220px; margin: 0; }
+.product-gallery img { width: 100%; border-radius: 8px; }
+.product-gallery figcaption { font-size: 0.8rem; color: var(--vp-c-text-2); text-align: center; margin-top: 6px; }
 </style>

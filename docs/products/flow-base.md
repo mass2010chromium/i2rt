@@ -1,3 +1,7 @@
+<script setup>
+import { withBase } from 'vitepress'
+</script>
+
 # Flow Base
 
 <div class="product-badges">
@@ -9,10 +13,14 @@
 
 **Flow Base** is I2RT's omnidirectional holonomic mobile platform. Designed to pair with YAM arms, it enables precise whole-body mobile manipulation for tasks that demand exact positioning and free orientation.
 
-<MediaPlaceholder
-  type="photo"
-  description="Flow Base standalone — overhead 3/4 view showing the four mecanum/omni wheels, the top mounting plate, Raspberry Pi display, and E-stop button."
-/>
+<div class="product-gallery">
+  <figure>
+    <img :src="withBase('/images/flow_base.png')"  alt="Flow Base standalone" />
+    <figcaption>Flow Base — standalone overview showing four omni wheels, top mounting plate, and E-stop</figcaption>
+  </figure>
+</div>
+
+*Flow Base standalone — overhead 3/4 view showing the four mecanum/omni wheels, the top mounting plate, Raspberry Pi display, and E-stop button.*
 
 ## Tagline
 
@@ -43,10 +51,18 @@
 
 ## Photos & Videos
 
-<MediaPlaceholder
-  type="photo"
-  description="Flow Base control panel close-up: E-stop, CAN selector switch, Raspberry Pi display showing boot status."
-/>
+<div class="product-gallery">
+  <figure>
+    <img :src="withBase('/images/flow_base_panel.jpg')"  alt="Flow Base control panel" />
+    <figcaption>Flow Base control panel — E-stop, CAN selector switch, and Raspberry Pi display</figcaption>
+  </figure>
+  <figure>
+    <img :src="withBase('/images/remote.jpg')"  alt="Flow Base remote controller" />
+    <figcaption>Remote controller — joystick for manual operation</figcaption>
+  </figure>
+</div>
+
+*Flow Base control panel close-up: E-stop, CAN selector switch, Raspberry Pi display showing boot status.*
 
 <MediaPlaceholder
   type="video"
@@ -188,4 +204,8 @@ To bypass the on-board Pi and control the base from an external computer:
 .product-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 24px; }
 .product-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid; }
 .product-badge.available { color: #4CCFB0; border-color: rgba(76,207,176,0.4); background: rgba(76,207,176,0.08); }
+.product-gallery { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0 8px; }
+.product-gallery figure { flex: 1 1 220px; margin: 0; }
+.product-gallery img { width: 100%; border-radius: 8px; }
+.product-gallery figcaption { font-size: 0.8rem; color: var(--vp-c-text-2); text-align: center; margin-top: 6px; }
 </style>

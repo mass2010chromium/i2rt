@@ -20,5 +20,6 @@ I2RT Robotics builds an open ecosystem of robotic arms, mobile bases, and teleop
 | `linear_3507` | DM3507 | Light | Requires closed-position calibration |
 | `linear_4310` | DM4310 | Medium | Higher gripping force |
 | `yam_teaching_handle` | — | — | Leader arm with trigger + 2 buttons |
+| `flexpoint_4310` | DM4310 | — | Adaptive compliant gripper for extreme-condition grasping |
 
 See [Grippers SDK](/sdk/grippers) for API details.
