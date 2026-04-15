@@ -66,7 +66,6 @@ YAM supports four interchangeable end effectors:
   </figure>
 </div>
 
-*The three YAM gripper variants shown side by side: crank_4310, linear_3507, and yam_teaching_handle. Macro photo on a dark surface.*
 
 | Gripper | Description |
 |---------|-------------|
@@ -98,7 +97,6 @@ i2rt/robot_models/arm/yam/
   <source :src="withBase('/images/yam-standard/YAM-ST-GP-video.mp4')" type="video/mp4" />
 </video>
 
-*YAM in zero-gravity mode — operator guides the arm by hand through a full range of motion. Emphasizes backdrivability and smooth motion.*
 
 ## Getting Started
 

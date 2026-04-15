@@ -27,7 +27,6 @@ The **YAM Leader** is the operator-side arm used for teleoperation. It is kinema
   </figure>
 </div>
 
-*YAM Leader arm with teaching handle mounted — trigger and two top buttons clearly visible. Side-by-side with a YAM follower arm to show the matched pair.*
 
 ## Specifications
 
@@ -97,7 +96,6 @@ For full bimanual setup see [Bimanual Teleoperation](/examples/bimanual-teleoper
   <source :src="withBase('/images/yam-leader/YAM-ST-Leader-video.mp4')" type="video/mp4" />
 </video>
 
-*Operator using two YAM Leader arms to control two YAM follower arms — picking and placing objects. Shows trigger use for gripper control.*
 
 ## See Also
 

@@ -23,7 +23,6 @@ The **YAM Arm** is the follower/manipulation arm in the YAM family — a 6-DOF, 
   </figure>
 </div>
 
-*YAM arm standalone on a white tabletop — front and 3/4 views showing all six joints, base plate, and default linear gripper.*
 
 ## Models
 
@@ -76,7 +75,6 @@ i2rt/robot_models/arm/yam/
   <source :src="withBase('/images/yam-standard/YAM-ST-GP-video.mp4')" type="video/mp4" />
 </video>
 
-*YAM in zero-gravity mode — operator guides the arm by hand through a full range of motion. Demonstrates backdrivability.*
 
 ## Quick Start
 

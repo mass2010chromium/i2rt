@@ -23,7 +23,6 @@ import { withBase } from 'vitepress'
   </figure>
 </div>
 
-*Linear Bot full system: Flow Base with vertical linear rail and YAM arm mounted at top.*
 
 ## System Architecture
 

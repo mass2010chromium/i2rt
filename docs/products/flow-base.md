@@ -20,7 +20,6 @@ import { withBase } from 'vitepress'
   </figure>
 </div>
 
-*Flow Base standalone — overhead 3/4 view showing the four mecanum/omni wheels, the top mounting plate, Raspberry Pi display, and E-stop button.*
 
 ## Tagline
 
@@ -62,7 +61,6 @@ import { withBase } from 'vitepress'
   </figure>
 </div>
 
-*Flow Base control panel close-up: E-stop, CAN selector switch, Raspberry Pi display showing boot status.*
 
 <MediaPlaceholder
   type="video"

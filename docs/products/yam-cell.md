@@ -27,7 +27,6 @@ import { withBase } from 'vitepress'
   </figure>
 </div>
 
-*Full YAM Cell setup: four arms on a tabletop, two leader arms facing the operator, two follower arms in the task workspace.*
 
 #### Mobile Variant
 
@@ -83,7 +82,6 @@ Each arm requires a dedicated CAN channel. Assign persistent names using udev ru
   <source :src="withBase('/images/yam-station/DS-ST.mp4')" type="video/mp4" />
 </video>
 
-*Close-up of the teaching handle trigger being used to open/close the follower gripper while the arm is in motion.*
 
 ## Quick Start
 
