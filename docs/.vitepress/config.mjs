@@ -56,6 +56,16 @@ export default defineConfig({
             { text: 'Linear Bot', link: '/products/linear-bot' },
           ],
         },
+        {
+          text: 'Motors',
+          collapsed: true,
+          items: [
+            { text: 'Overview', link: '/products/motors' },
+            { text: 'GF43X40-16', link: '/products/motor-gf43x40-16' },
+            { text: 'GF43X40-10', link: '/products/motor-gf43x40-10' },
+            { text: 'GF43X10-10', link: '/products/motor-gf43x10-10' },
+          ],
+        },
       ],
       '/getting-started/': [
         {
