@@ -14,15 +14,15 @@ import { withBase } from 'vitepress'
 
 <div class="product-gallery">
   <figure>
-    <img :src="withBase('/images/yam-station/DS-ST-1.png')"  alt="YAM Cell full workstation" />
+    <img :src="withBase('/images/yam-station/DS-ST-1.webp')"  alt="YAM Cell full workstation" />
     <figcaption>YAM Cell full workstation with monitor and four arms</figcaption>
   </figure>
   <figure>
-    <img :src="withBase('/images/yam-station/DS-ST-2.jpg')"  alt="YAM Cell side view" />
+    <img :src="withBase('/images/yam-station/DS-ST-2.webp')"  alt="YAM Cell side view" />
     <figcaption>YAM Cell — side view</figcaption>
   </figure>
   <figure>
-    <img :src="withBase('/images/yam-station/DS-ST-3.jpg')"  alt="YAM Cell detail" />
+    <img :src="withBase('/images/yam-station/DS-ST-3.webp')"  alt="YAM Cell detail" />
     <figcaption>YAM Cell — workspace detail</figcaption>
   </figure>
 </div>
@@ -33,11 +33,11 @@ import { withBase } from 'vitepress'
 
 <div class="product-gallery">
   <figure>
-    <img :src="withBase('/images/yam-mobile/YAM-Mobile-1.JPG')"  alt="YAM Cell Mobile system" />
+    <img :src="withBase('/images/yam-mobile/YAM-Mobile-1.webp')"  alt="YAM Cell Mobile system" />
     <figcaption>YAM Cell Mobile — four arms on a mobile aluminum frame</figcaption>
   </figure>
   <figure>
-    <img :src="withBase('/images/yam-mobile/YAM-Mobile-2.PNG')"  alt="YAM Cell Mobile 3/4 view" />
+    <img :src="withBase('/images/yam-mobile/YAM-Mobile-2.webp')"  alt="YAM Cell Mobile 3/4 view" />
     <figcaption>YAM Cell Mobile — 3/4 view</figcaption>
   </figure>
 </div>

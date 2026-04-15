@@ -45,23 +45,23 @@ YAM supports four interchangeable end effectors:
 
 <div class="product-gallery">
   <figure>
-    <img :src="withBase('/images/crank-shaft-gripper/GP-4310-CS-1.PNG')"  alt="Crank Shaft Gripper GP-4310-CS front" />
+    <img :src="withBase('/images/crank-shaft-gripper/GP-4310-CS-1.webp')"  alt="Crank Shaft Gripper GP-4310-CS front" />
     <figcaption><code>crank_4310</code> — front view</figcaption>
   </figure>
   <figure>
-    <img :src="withBase('/images/crank-shaft-gripper/GP-4310-CS-2.PNG')"  alt="Crank Shaft Gripper GP-4310-CS side" />
+    <img :src="withBase('/images/crank-shaft-gripper/GP-4310-CS-2.webp')"  alt="Crank Shaft Gripper GP-4310-CS side" />
     <figcaption><code>crank_4310</code> — side view</figcaption>
   </figure>
   <figure>
-    <img :src="withBase('/images/linear-gripper-4310/GP-4310-CTR-1.JPEG')"  alt="Linear Gripper 4310 front" />
+    <img :src="withBase('/images/linear-gripper-4310/GP-4310-CTR-1.webp')"  alt="Linear Gripper 4310 front" />
     <figcaption><code>linear_4310</code> — front view</figcaption>
   </figure>
   <figure>
-    <img :src="withBase('/images/linear-gripper-3507/GP-3507-CTR-1.PNG')"  alt="Linear Gripper 3507 front" />
+    <img :src="withBase('/images/linear-gripper-3507/GP-3507-CTR-1.webp')"  alt="Linear Gripper 3507 front" />
     <figcaption><code>linear_3507</code> — front view</figcaption>
   </figure>
   <figure>
-    <img :src="withBase('/images/flexpoint-adaptive-gripper/GP-4310-FLX-1.PNG')"  alt="FlexPoint Adaptive Gripper front" />
+    <img :src="withBase('/images/flexpoint-adaptive-gripper/GP-4310-FLX-1.webp')"  alt="FlexPoint Adaptive Gripper front" />
     <figcaption><code>GP-4310-FLX</code> FlexPoint Adaptive — front view</figcaption>
   </figure>
 </div>
