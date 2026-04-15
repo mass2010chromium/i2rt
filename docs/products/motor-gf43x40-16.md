@@ -1,3 +1,7 @@
+<script setup>
+import { withBase } from 'vitepress'
+</script>
+
 # GF43X40-16
 
 <div class="product-badges">
@@ -7,6 +11,19 @@
 </div>
 
 The **GF43X40-16** is the highest-power variant of the GF43 planetary joint module. It combines a 40× planetary gearbox with a 24 V brushless DC motor and integrated CAN driver. Gears are vacuum-nitrided for durability; the concentrated-winding motor is optimized for low cogging torque and smooth motion.
+
+## Dimensions
+
+<div class="dim-gallery">
+  <figure>
+    <img :src="withBase('/images/motors/image2.webp')" alt="GF43X40-16 overall dimensions" />
+    <figcaption>Overall dimensions — three-view</figcaption>
+  </figure>
+  <figure>
+    <img :src="withBase('/images/motors/image3.webp')" alt="GF43X40-16 detailed drawing" />
+    <figcaption>Detailed drawing with hole pattern and tolerances</figcaption>
+  </figure>
+</div>
 
 ## Specifications
 
@@ -51,4 +68,8 @@ Visit [i2rt.com](https://i2rt.com) or contact [sales@i2rt.com](mailto:sales@i2rt
 <style scoped>
 .product-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 24px; }
 .product-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid; color: #4CCFB0; border-color: rgba(76,207,176,0.4); background: rgba(76,207,176,0.08); }
+.dim-gallery { display: flex; flex-direction: column; gap: 16px; margin: 16px 0 24px; }
+.dim-gallery figure { margin: 0; }
+.dim-gallery img { width: 100%; border-radius: 6px; background: #fff; padding: 8px; box-sizing: border-box; }
+.dim-gallery figcaption { font-size: 0.8rem; color: var(--vp-c-text-2); text-align: center; margin-top: 6px; }
 </style>
