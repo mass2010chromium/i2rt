@@ -52,6 +52,6 @@ Join the I2RT community:
 <style scoped>
 .product-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 24px; }
 .product-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid; }
-.product-badge.available { color: #4CCFB0; border-color: rgba(76,207,176,0.4); background: rgba(76,207,176,0.08); }
+.product-badge.available { color: #4C6762; border-color: rgba(76,103,98,0.4); background: rgba(76,103,98,0.08); }
 .product-badge.coming-soon { color: #9ca3b8; border-color: rgba(156,163,184,0.3); background: rgba(156,163,184,0.06); }
 </style>

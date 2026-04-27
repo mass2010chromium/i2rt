@@ -11,6 +11,12 @@ All examples live in the [`examples/`](https://github.com/i2rt-robotics/i2rt/tre
 | [Single Motor PD Control](/examples/motor-control) | 1 DM motor | Beginner |
 | [MuJoCo Control Interface](/examples/control-with-mujoco) | None (sim) / 1 YAM arm | Beginner |
 
+::: tip More examples
+Additional examples in the repository (not yet documented here):
+- `examples/control_with_viser/` — Web-based robot visualization with Viser
+- `examples/minimum_gello/` — Core leader-follower teleoperation script
+:::
+
 ## Running an Example
 
 ```bash

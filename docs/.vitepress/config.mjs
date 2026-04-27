@@ -6,13 +6,13 @@ export default defineConfig({
   title: 'I2RT Robotics',
   description: 'Open robotics platform for research and embodied AI — YAM arms, Flow Base, and more.',
   base,
-  appearance: 'dark',
+  appearance: true,
 
   head: [
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
     ['link', { href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap', rel: 'stylesheet' }],
-    ['meta', { name: 'theme-color', content: '#FF7A29' }],
+    ['meta', { name: 'theme-color', content: '#855832' }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:title', content: 'I2RT Robotics Docs' }],
     ['meta', { property: 'og:description', content: 'Documentation for the YAM arm family, Flow Base, and Linear Bot.' }],
@@ -92,6 +92,7 @@ export default defineConfig({
             { text: 'Bimanual Teleoperation', link: '/examples/bimanual-teleoperation' },
             { text: 'Record & Replay', link: '/examples/record-replay' },
             { text: 'Motor Control', link: '/examples/motor-control' },
+            { text: 'MuJoCo Control', link: '/examples/control-with-mujoco' },
           ],
         },
       ],

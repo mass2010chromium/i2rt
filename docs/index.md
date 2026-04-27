@@ -117,17 +117,18 @@ import { withBase } from 'vitepress'
   <div class="qs-code">
 
 ```python
-from i2rt.robots.motor_chain_robot import get_yam_robot
+from i2rt.robots.get_robot import get_yam_robot
 import numpy as np
 
 # Connect (zero-gravity mode by default)
 robot = get_yam_robot(channel="can0")
 
-# Read current joint positions
-q = robot.get_joint_pos()   # shape: (6,) radians
+# Read current observations
+obs = robot.get_observations()
+print(obs["joint_pos"])  # (6,) arm joints in radians
 
-# Command the arm home
-robot.command_joint_pos(np.zeros(6))
+# Command the arm home (6 joints + 1 gripper)
+robot.command_joint_pos(np.zeros(7))
 ```
 
   </div>
@@ -175,7 +176,7 @@ robot.command_joint_pos(np.zeros(6))
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #FF7A29;
+  color: #855832;
   margin-bottom: 16px;
 }
 
@@ -190,7 +191,7 @@ robot.command_joint_pos(np.zeros(6))
 }
 
 .grad {
-  background: linear-gradient(135deg, #FF7A29 0%, #4CCFB0 100%);
+  background: linear-gradient(135deg, #855832 0%, #4C6762 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -215,7 +216,7 @@ robot.command_joint_pos(np.zeros(6))
   display: inline-block;
   padding: 10px 22px;
   border-radius: 8px;
-  background: linear-gradient(135deg, #FF7A29, #cc5500);
+  background: linear-gradient(135deg, #855832, #6e4828);
   color: #fff !important;
   font-size: 0.92rem;
   font-weight: 600;
@@ -228,15 +229,15 @@ robot.command_joint_pos(np.zeros(6))
   display: inline-block;
   padding: 10px 20px;
   border-radius: 8px;
-  background: rgba(255, 122, 41, 0.07);
-  color: #FF7A29 !important;
-  border: 1px solid rgba(255, 122, 41, 0.28);
+  background: rgba(133, 88, 50, 0.06);
+  color: #855832 !important;
+  border: 1px solid rgba(133, 88, 50, 0.25);
   font-size: 0.92rem;
   font-weight: 600;
   text-decoration: none !important;
   transition: background 0.15s, transform 0.15s;
 }
-.btn-ghost:hover { background: rgba(255,122,41,0.14); transform: translateY(-1px); }
+.btn-ghost:hover { background: rgba(133,88,50,0.12); transform: translateY(-1px); }
 
 .hero-chips {
   display: flex;
@@ -248,9 +249,9 @@ robot.command_joint_pos(np.zeros(6))
   font-weight: 600;
   padding: 3px 10px;
   border-radius: 12px;
-  background: rgba(76, 207, 176, 0.08);
-  border: 1px solid rgba(76, 207, 176, 0.22);
-  color: #4CCFB0;
+  background: rgba(76, 103, 98, 0.06);
+  border: 1px solid rgba(76, 103, 98, 0.2);
+  color: #4C6762;
 }
 
 /* FEATURES */
@@ -270,15 +271,15 @@ robot.command_joint_pos(np.zeros(6))
   padding: 22px 18px;
   border-radius: 12px;
   background: var(--vp-c-bg-soft);
-  border: 1px solid rgba(255, 122, 41, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   text-decoration: none !important;
-  transition: border-color 0.2s, transform 0.2s;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
-.feat:hover { border-color: rgba(255,122,41,0.35); transform: translateY(-2px); }
+.feat:hover { border-color: rgba(133,88,50,0.3); transform: translateY(-2px); box-shadow: 0 4px 16px rgba(133,88,50,0.06); }
 .feat-icon { font-size: 1.8rem; line-height: 1; }
 .feat h3 { font-size: 0.95rem; font-weight: 700; margin: 0; border: none; padding: 0; color: var(--vp-c-text-1); }
 .feat p { font-size: 0.85rem; color: var(--vp-c-text-2); line-height: 1.55; margin: 0; flex: 1; }
-.feat-link { font-size: 0.8rem; font-weight: 600; color: #FF7A29; }
+.feat-link { font-size: 0.8rem; font-weight: 600; color: #855832; }
 
 /* PRODUCTS */
 .products { margin-bottom: 72px; }
@@ -293,22 +294,22 @@ robot.command_joint_pos(np.zeros(6))
   align-items: flex-start;
   padding: 18px;
   background: var(--vp-c-bg-soft);
-  border: 1px solid rgba(255, 122, 41, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 12px;
   text-decoration: none !important;
-  transition: border-color 0.2s, transform 0.2s;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
-.pcard:hover { border-color: rgba(255,122,41,0.38); transform: translateY(-2px); }
+.pcard:hover { border-color: rgba(133,88,50,0.3); transform: translateY(-2px); box-shadow: 0 4px 16px rgba(133,88,50,0.06); }
 .pcard-icon { font-size: 1.6rem; flex-shrink: 0; padding-top: 2px; }
 .pcard h3 { font-size: 0.95rem; font-weight: 700; margin: 0 0 5px; border: none; padding: 0; color: var(--vp-c-text-1); }
 .pcard p { font-size: 0.83rem; color: var(--vp-c-text-2); margin: 0 0 8px; line-height: 1.5; }
-.pcard-price { font-size: 0.78rem; font-weight: 700; color: #FF7A29; }
+.pcard-price { font-size: 0.78rem; font-weight: 700; color: #855832; }
 .pcard-badge {
   display: inline-block; font-size: 0.7rem; font-weight: 600;
   padding: 2px 9px; border-radius: 10px;
-  background: rgba(76,207,176,0.1); color: #4CCFB0; border: 1px solid rgba(76,207,176,0.28);
+  background: rgba(76,103,98,0.08); color: #4C6762; border: 1px solid rgba(76,103,98,0.22);
 }
-.pcard-badge.muted { background: rgba(156,163,184,0.07); color: #9ca3b8; border-color: rgba(156,163,184,0.22); }
+.pcard-badge.muted { background: rgba(138,138,138,0.06); color: #8a8a8a; border-color: rgba(138,138,138,0.2); }
 
 /* QUICK START */
 .quickstart {
@@ -318,7 +319,7 @@ robot.command_joint_pos(np.zeros(6))
   align-items: center;
   padding: 48px;
   background: var(--vp-c-bg-soft);
-  border: 1px solid rgba(255,122,41,0.1);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 16px;
   margin-bottom: 56px;
 }
@@ -330,4 +331,14 @@ robot.command_joint_pos(np.zeros(6))
 
 /* CTA */
 .cta-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; padding-top: 8px; }
+
+/* DARK MODE OVERRIDES for homepage */
+.dark .feat { border-color: rgba(133,88,50,0.08); }
+.dark .feat:hover { border-color: rgba(133,88,50,0.3); box-shadow: 0 4px 16px rgba(133,88,50,0.08); }
+.dark .pcard { border-color: rgba(133,88,50,0.08); }
+.dark .pcard:hover { border-color: rgba(133,88,50,0.3); box-shadow: 0 4px 16px rgba(133,88,50,0.08); }
+.dark .quickstart { border-color: rgba(133,88,50,0.1); }
+.dark .btn-ghost { background: rgba(133,88,50,0.1); border-color: rgba(133,88,50,0.25); }
+.dark .btn-ghost:hover { background: rgba(133,88,50,0.18); }
+.dark .chip { background: rgba(76,103,98,0.1); border-color: rgba(76,103,98,0.25); }
 </style>

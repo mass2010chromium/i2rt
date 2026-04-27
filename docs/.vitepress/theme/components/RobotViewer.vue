@@ -52,8 +52,8 @@ onMounted(async () => {
 
     // ── Scene ─────────────────────────────────────────────────────────────────
     const isDark = document.documentElement.classList.contains('dark')
-    const bgColor = isDark ? 0x080c18 : 0xf2f4f8
-    const fogColor = isDark ? 0x080c18 : 0xf2f4f8
+    const bgColor = isDark ? 0x1a1612 : 0xf7f5f2
+    const fogColor = isDark ? 0x1a1612 : 0xf7f5f2
     scene = new THREE.Scene()
     scene.background = new THREE.Color(bgColor)
     scene.fog = new THREE.FogExp2(fogColor, 0.22)
@@ -85,21 +85,21 @@ onMounted(async () => {
     fill.position.set(-3, 2, -2)
     scene.add(fill)
 
-    const amberPt = new THREE.PointLight(0xFF7A29, 8, 2.5, 2)
-    amberPt.position.set(-0.5, 0.6, 0.3)
-    scene.add(amberPt)
+    const warmPt = new THREE.PointLight(0x855832, 8, 2.5, 2)
+    warmPt.position.set(-0.5, 0.6, 0.3)
+    scene.add(warmPt)
 
-    const tealPt = new THREE.PointLight(0x4CCFB0, 6, 2.5, 2)
+    const tealPt = new THREE.PointLight(0x4C6762, 6, 2.5, 2)
     tealPt.position.set(0.7, 0.15, 0.6)
     scene.add(tealPt)
 
     // ── Floor ─────────────────────────────────────────────────────────────────
-    const grid = new THREE.GridHelper(3, 22, 0x1a3344, 0x0d1f2a)
+    const grid = new THREE.GridHelper(3, 22, 0x4C6762, 0x2a3a36)
     grid.position.y = 0
     scene.add(grid)
 
     const glowGeo = new THREE.CircleGeometry(0.2, 48)
-    const glowMat = new THREE.MeshBasicMaterial({ color: 0xFF7A29, transparent: true, opacity: 0.1, depthWrite: false })
+    const glowMat = new THREE.MeshBasicMaterial({ color: 0x855832, transparent: true, opacity: 0.08, depthWrite: false })
     const glow = new THREE.Mesh(glowGeo, glowMat)
     glow.rotation.x = -Math.PI / 2
     glow.position.y = 0.001
@@ -109,15 +109,15 @@ onMounted(async () => {
     const mkMat = (hex, emissiveHex = 0x000000, emissiveI = 0, metal = 0.75, rough = 0.25) =>
       new THREE.MeshStandardMaterial({ color: hex, metalness: metal, roughness: rough, emissive: emissiveHex, emissiveIntensity: emissiveI })
 
-    // Bright brand-color scheme — amber body, teal accents
-    const matBase   = mkMat(0xCC5500, 0xFF7A29, 0.15)          // deep amber
-    const matLink1  = mkMat(0xFF8C3A, 0xFF7A29, 0.2)           // bright amber
-    const matLink2  = mkMat(0xE06020, 0xFF7A29, 0.15)          // mid amber
-    const matLink3  = mkMat(0x2EB89A, 0x4CCFB0, 0.2)           // teal
-    const matLink4  = mkMat(0xFF7A29, 0xFF7A29, 0.25)          // brand orange
-    const matLink5  = mkMat(0x25A88A, 0x4CCFB0, 0.2)           // teal
-    const matGrip   = mkMat(0x3a3a4a, 0xFF7A29, 0.12, 0.9, 0.15) // dark metal housing
-    const matTip    = mkMat(0x5DDFC0, 0x4CCFB0, 0.5, 0.5, 0.2)   // bright teal fingers
+    // Warm brand-color scheme — brown body, teal accents
+    const matBase   = mkMat(0x6e4828, 0x855832, 0.15)          // deep brown
+    const matLink1  = mkMat(0x9A6B42, 0x855832, 0.2)           // warm brown
+    const matLink2  = mkMat(0x7D5530, 0x855832, 0.15)          // mid brown
+    const matLink3  = mkMat(0x3D7A6A, 0x4C6762, 0.2)           // teal
+    const matLink4  = mkMat(0x855832, 0x855832, 0.25)          // brand brown
+    const matLink5  = mkMat(0x3A706A, 0x4C6762, 0.2)           // teal
+    const matGrip   = mkMat(0x3a3a42, 0x855832, 0.12, 0.9, 0.15) // dark metal housing
+    const matTip    = mkMat(0x5A8A7E, 0x4C6762, 0.4, 0.5, 0.2)   // muted teal fingers
 
     // ── Load all STLs ─────────────────────────────────────────────────────────
     const loader = new STLLoader()
@@ -324,7 +324,7 @@ onMounted(async () => {
       bTR.position.y = basePosR.y + slide   // tip_right moves in +y of b6
 
       // Soft light breathing
-      amberPt.intensity = 8 + Math.sin(t * 1.2) * 2.5
+      warmPt.intensity = 8 + Math.sin(t * 1.2) * 2.5
       tealPt.intensity  = 6 + Math.cos(t * 0.9) * 2
 
       controls.update()
@@ -364,8 +364,8 @@ onUnmounted(() => {
   height: 540px;
   border-radius: 16px;
   overflow: hidden;
-  border: 1px solid rgba(255, 122, 41, 0.18);
-  box-shadow: 0 0 60px rgba(255, 122, 41, 0.07), 0 0 120px rgba(76, 207, 176, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.06);
 }
 
 .robot-canvas { width: 100%; height: 100%; }
@@ -388,8 +388,8 @@ onUnmounted(() => {
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #FF7A29;
-  text-shadow: 0 0 12px rgba(255, 122, 41, 0.7);
+  color: #855832;
+  text-shadow: 0 0 12px rgba(133, 88, 50, 0.5);
 }
 
 .viewer-hint {
@@ -406,8 +406,8 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   gap: 14px;
-  background: rgba(8, 12, 24, 0.92);
-  color: rgba(255, 255, 255, 0.45);
+  background: rgba(247, 245, 242, 0.92);
+  color: rgba(0, 0, 0, 0.4);
   font-size: 0.85rem;
   letter-spacing: 0.05em;
 }
@@ -416,8 +416,8 @@ onUnmounted(() => {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 122, 41, 0.15);
-  border-top-color: #FF7A29;
+  border: 2px solid rgba(133, 88, 50, 0.15);
+  border-top-color: #855832;
   animation: spin 0.85s linear infinite;
 }
 
@@ -429,8 +429,8 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(8, 12, 24, 0.92);
-  color: #f87171;
+  background: rgba(247, 245, 242, 0.92);
+  color: #dc2626;
   font-size: 0.9rem;
   padding: 24px;
   text-align: center;

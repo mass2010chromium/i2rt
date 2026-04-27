@@ -7,7 +7,7 @@ This guide covers installing the `i2rt` Python package from source on Ubuntu (re
 | Requirement | Version |
 |-------------|---------|
 | OS | Ubuntu 22.04 LTS (recommended) |
-| Python | 3.11 |
+| Python | 3.10+ (3.11 recommended) |
 | CAN adapter | CANable or compatible USB-CAN device |
 | Build tools | `build-essential`, `python3-dev` |
 

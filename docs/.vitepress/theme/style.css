@@ -1,51 +1,67 @@
 /* ============================================================
    I2RT Robotics — Custom VitePress Theme
-   Brand: Navy #11151C | Amber #FF7A29 | Teal #4C6762
+   Brand: Brown #855832 | Teal #4C6762 | Charcoal #11151C
+   Inspired by i2rt.com — warm, minimal, professional
    ============================================================ */
 
 :root {
-  --vp-c-brand-1: #FF7A29;
-  --vp-c-brand-2: #ff6310;
-  --vp-c-brand-3: #cc5500;
-  --vp-c-brand-soft: rgba(255, 122, 41, 0.14);
+  --vp-c-brand-1: #855832;
+  --vp-c-brand-2: #6e4828;
+  --vp-c-brand-3: #5a3b20;
+  --vp-c-brand-soft: rgba(133, 88, 50, 0.12);
+
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-soft: #f7f5f2;
+  --vp-c-bg-mute: #edeae6;
+
+  --vp-c-text-1: #1a1a1a;
+  --vp-c-text-2: #5c5c5c;
+  --vp-c-text-3: #8a8a8a;
+
+  --vp-c-divider: rgba(0, 0, 0, 0.08);
 
   --vp-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --vp-font-family-mono: 'IBM Plex Mono', 'Fira Code', monospace;
 
   --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: linear-gradient(135deg, #FF7A29 0%, #4CCFB0 100%);
-  --vp-home-hero-image-background-image: radial-gradient(circle, rgba(255,122,41,0.25) 0%, rgba(76,207,176,0.1) 50%, transparent 70%);
+  --vp-home-hero-name-background: linear-gradient(135deg, #855832 0%, #4C6762 100%);
+  --vp-home-hero-image-background-image: radial-gradient(circle, rgba(133,88,50,0.15) 0%, rgba(76,103,98,0.08) 50%, transparent 70%);
   --vp-home-hero-image-filter: blur(72px);
 
-  --vp-nav-bg-color: rgba(255, 255, 255, 0.88);
+  --vp-nav-bg-color: rgba(255, 255, 255, 0.92);
 
   /* Wider layout so nav bar uses more horizontal space */
   --vp-layout-max-width: 1600px;
+
+  /* Tip / Warning custom block colors */
+  --vp-custom-block-tip-bg: rgba(76, 103, 98, 0.06);
+  --vp-custom-block-tip-border: rgba(76, 103, 98, 0.3);
+  --vp-custom-block-tip-text: #3a5a52;
 }
 
 .dark {
-  --vp-c-bg: #0a0e1a;
-  --vp-c-bg-soft: #10152b;
-  --vp-c-bg-mute: #181e35;
+  --vp-c-bg: #1a1612;
+  --vp-c-bg-soft: #231e18;
+  --vp-c-bg-mute: #2e2820;
   --vp-c-divider: rgba(255, 255, 255, 0.08);
-  --vp-c-text-1: #e8eaf0;
-  --vp-c-text-2: #9ca3b8;
-  --vp-c-text-3: #6b7490;
-  --vp-nav-bg-color: rgba(10, 14, 26, 0.92);
-  --vp-sidebar-bg-color: #0d1124;
+  --vp-c-text-1: #e8e4df;
+  --vp-c-text-2: #a69d93;
+  --vp-c-text-3: #7a7168;
+  --vp-nav-bg-color: rgba(26, 22, 18, 0.94);
+  --vp-sidebar-bg-color: #1e1914;
 }
 
 /* ── Scrollbar ────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,122,41,0.3); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,122,41,0.6); }
+::-webkit-scrollbar-thumb { background: rgba(133, 88, 50, 0.25); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(133, 88, 50, 0.5); }
 
 /* ── Navbar ───────────────────────────────────────────── */
 .VPNav {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 122, 41, 0.12) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
 }
 
 /* Widen the search button in the navbar */
@@ -66,10 +82,7 @@
 .VPNavBarTitle .title {
   font-weight: 700;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #FF7A29 0%, #4CCFB0 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #855832;
 }
 
 /* ── Sidebar ──────────────────────────────────────────── */
@@ -84,15 +97,26 @@
 }
 
 /* ── Code blocks ──────────────────────────────────────── */
+div[class*="language-"] {
+  background: #f7f5f2 !important;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+}
+
+.vp-code-group .tabs {
+  background: #edeae6;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
 .dark div[class*="language-"] {
-  background: #080c18 !important;
-  border: 1px solid rgba(255, 122, 41, 0.1);
+  background: #161210 !important;
+  border: 1px solid rgba(133, 88, 50, 0.1);
   border-radius: 10px;
 }
 
 .dark .vp-code-group .tabs {
-  background: #0d1124;
-  border-bottom: 1px solid rgba(255, 122, 41, 0.12);
+  background: #1e1914;
+  border-bottom: 1px solid rgba(133, 88, 50, 0.12);
 }
 
 code {
@@ -100,9 +124,9 @@ code {
 }
 
 /* ── Badges ───────────────────────────────────────────── */
-.vp-badge.tip { background: rgba(76, 207, 176, 0.15); color: #4CCFB0; border: 1px solid rgba(76,207,176,0.3); }
-.vp-badge.warning { background: rgba(255, 122, 41, 0.15); color: #FF7A29; border: 1px solid rgba(255,122,41,0.3); }
-.vp-badge.danger { background: rgba(220, 38, 38, 0.15); color: #f87171; border: 1px solid rgba(220,38,38,0.3); }
+.vp-badge.tip { background: rgba(76, 103, 98, 0.1); color: #4C6762; border: 1px solid rgba(76,103,98,0.25); }
+.vp-badge.warning { background: rgba(133, 88, 50, 0.1); color: #855832; border: 1px solid rgba(133,88,50,0.25); }
+.vp-badge.danger { background: rgba(220, 38, 38, 0.1); color: #dc2626; border: 1px solid rgba(220,38,38,0.2); }
 
 /* ── Home hero ────────────────────────────────────────── */
 .VPHero .name {
@@ -120,25 +144,39 @@ code {
 /* ── Features ─────────────────────────────────────────── */
 .VPFeature {
   background: var(--vp-c-bg-soft) !important;
-  border: 1px solid rgba(255, 122, 41, 0.08) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
   border-radius: 12px !important;
-  transition: border-color 0.2s, transform 0.2s;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .VPFeature:hover {
-  border-color: rgba(255, 122, 41, 0.35) !important;
+  border-color: rgba(133, 88, 50, 0.3) !important;
   transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(133, 88, 50, 0.06);
 }
 
 /* ── Tables ───────────────────────────────────────────── */
-.dark table {
+table {
   border-collapse: collapse;
 }
 
-.dark th {
-  background: rgba(255, 122, 41, 0.08);
+th {
+  background: rgba(133, 88, 50, 0.05);
   color: var(--vp-c-brand-1);
-  border: 1px solid rgba(255, 122, 41, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+td {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+tr:hover td {
+  background: rgba(133, 88, 50, 0.03);
+}
+
+.dark th {
+  background: rgba(133, 88, 50, 0.1);
+  border: 1px solid rgba(133, 88, 50, 0.15);
 }
 
 .dark td {
@@ -146,23 +184,38 @@ code {
 }
 
 .dark tr:hover td {
-  background: rgba(255, 122, 41, 0.04);
+  background: rgba(133, 88, 50, 0.05);
 }
 
 /* ── Tip / warning / danger blocks ───────────────────── */
+.custom-block.tip {
+  background: rgba(76, 103, 98, 0.05);
+  border-color: rgba(76, 103, 98, 0.3);
+}
+
+.custom-block.warning {
+  background: rgba(133, 88, 50, 0.05);
+  border-color: rgba(133, 88, 50, 0.3);
+}
+
+.custom-block.danger {
+  background: rgba(220, 38, 38, 0.05);
+  border-color: rgba(220, 38, 38, 0.25);
+}
+
 .dark .custom-block.tip {
-  background: rgba(76, 207, 176, 0.06);
-  border-color: rgba(76, 207, 176, 0.35);
+  background: rgba(76, 103, 98, 0.08);
+  border-color: rgba(76, 103, 98, 0.35);
 }
 
 .dark .custom-block.warning {
-  background: rgba(255, 122, 41, 0.06);
-  border-color: rgba(255, 122, 41, 0.35);
+  background: rgba(133, 88, 50, 0.08);
+  border-color: rgba(133, 88, 50, 0.35);
 }
 
 .dark .custom-block.danger {
-  background: rgba(220, 38, 38, 0.06);
-  border-color: rgba(220, 38, 38, 0.35);
+  background: rgba(220, 38, 38, 0.08);
+  border-color: rgba(220, 38, 38, 0.3);
 }
 
 /* ── Home page: remove VitePress page-layout padding ─── */
@@ -174,8 +227,8 @@ code {
 /* ── Media placeholders ──────────────────────────────── */
 .media-placeholder {
   position: relative;
-  background: linear-gradient(135deg, #0d1124 0%, #10152b 100%);
-  border: 1px dashed rgba(255, 122, 41, 0.35);
+  background: linear-gradient(135deg, #f7f5f2 0%, #edeae6 100%);
+  border: 1px dashed rgba(133, 88, 50, 0.3);
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -188,11 +241,16 @@ code {
   overflow: hidden;
 }
 
+.dark .media-placeholder {
+  background: linear-gradient(135deg, #1e1914 0%, #231e18 100%);
+  border-color: rgba(133, 88, 50, 0.25);
+}
+
 .media-placeholder::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 50%, rgba(255,122,41,0.06) 0%, transparent 70%);
+  background: radial-gradient(ellipse at 50% 50%, rgba(133,88,50,0.04) 0%, transparent 70%);
 }
 
 .media-placeholder .placeholder-icon {
@@ -249,101 +307,29 @@ code {
 }
 
 .product-badge.available {
-  color: #4CCFB0;
-  border-color: rgba(76, 207, 176, 0.4);
-  background: rgba(76, 207, 176, 0.08);
+  color: #4C6762;
+  border-color: rgba(76, 103, 98, 0.35);
+  background: rgba(76, 103, 98, 0.06);
 }
 
 .product-badge.coming-soon {
-  color: #9ca3b8;
-  border-color: rgba(156, 163, 184, 0.3);
-  background: rgba(156, 163, 184, 0.06);
+  color: #8a8a8a;
+  border-color: rgba(138, 138, 138, 0.25);
+  background: rgba(138, 138, 138, 0.04);
 }
 
-/* ================================================================
-   LIGHT MODE OVERRIDES
-   ================================================================ */
-
-/* ── Light nav ────────────────────────────────────────── */
-:root:not(.dark) .VPNav {
-  border-bottom: 1px solid rgba(255, 122, 41, 0.15) !important;
-  background: rgba(255, 255, 255, 0.92);
+/* ── Dark mode nav ───────────────────────────────────── */
+.dark .VPNav {
+  border-bottom: 1px solid rgba(133, 88, 50, 0.12) !important;
 }
 
-:root:not(.dark) .VPNavBar > .wrapper {
-  background: transparent;
-}
-
-/* ── Light code blocks ────────────────────────────────── */
-:root:not(.dark) div[class*="language-"] {
-  background: #f4f6fb !important;
-  border: 1px solid rgba(255, 122, 41, 0.12);
-  border-radius: 10px;
-}
-
-:root:not(.dark) .vp-code-group .tabs {
-  background: #eef0f7;
-  border-bottom: 1px solid rgba(255, 122, 41, 0.12);
-}
-
-/* ── Light tables ─────────────────────────────────────── */
-:root:not(.dark) table {
-  border-collapse: collapse;
-}
-
-:root:not(.dark) th {
-  background: rgba(255, 122, 41, 0.06);
-  color: var(--vp-c-brand-3);
-  border: 1px solid rgba(255, 122, 41, 0.18);
-}
-
-:root:not(.dark) td {
-  border: 1px solid rgba(0, 0, 0, 0.07);
-}
-
-:root:not(.dark) tr:hover td {
-  background: rgba(255, 122, 41, 0.03);
-}
-
-/* ── Light custom blocks ──────────────────────────────── */
-:root:not(.dark) .custom-block.tip {
-  background: rgba(76, 207, 176, 0.06);
-  border-color: rgba(76, 207, 176, 0.4);
-}
-
-:root:not(.dark) .custom-block.warning {
-  background: rgba(255, 122, 41, 0.06);
-  border-color: rgba(255, 122, 41, 0.35);
-}
-
-:root:not(.dark) .custom-block.danger {
-  background: rgba(220, 38, 38, 0.05);
-  border-color: rgba(220, 38, 38, 0.3);
-}
-
-/* ── Light feature + product cards ───────────────────── */
-:root:not(.dark) .VPFeature {
-  background: #f8f9fc !important;
-  border: 1px solid rgba(255, 122, 41, 0.1) !important;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-}
-
-:root:not(.dark) .VPFeature:hover {
-  border-color: rgba(255, 122, 41, 0.4) !important;
-  box-shadow: 0 4px 16px rgba(255, 122, 41, 0.08);
-}
-
-/* ── Light sidebar ────────────────────────────────────── */
-:root:not(.dark) .VPSidebarItem.is-active > .item .link .text {
-  color: var(--vp-c-brand-3);
-}
-
-:root:not(.dark) .VPSidebarItem.is-active > .item {
-  border-left: 2px solid var(--vp-c-brand-3);
-}
-
-/* ── Light 3D viewer border ───────────────────────────── */
+/* ── Light 3D viewer border ──────────────────────────── */
 :root:not(.dark) .hero-viewer > div {
-  border: 1px solid rgba(255, 122, 41, 0.25) !important;
-  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.1), 0 0 40px rgba(255, 122, 41, 0.06) !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.06) !important;
+}
+
+.dark .hero-viewer > div {
+  border: 1px solid rgba(133, 88, 50, 0.15) !important;
+  box-shadow: 0 0 60px rgba(133, 88, 50, 0.05), 0 0 120px rgba(76, 103, 98, 0.03) !important;
 }

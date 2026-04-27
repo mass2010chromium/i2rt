@@ -150,7 +150,7 @@ onMounted(async () => {
 
     // ── Scene ─────────────────────────────────────────────────────────────
     const isDark = document.documentElement.classList.contains('dark')
-    const bgColor = isDark ? 0x080c18 : 0xf2f4f8
+    const bgColor = isDark ? 0x1a1612 : 0xf7f5f2
     scene = new THREE.Scene()
     scene.background = new THREE.Color(bgColor)
     scene.fog = new THREE.FogExp2(bgColor, 0.08)
@@ -185,16 +185,16 @@ onMounted(async () => {
     fill.position.set(-3, 3, -2)
     scene.add(fill)
 
-    const amberPt = new THREE.PointLight(0xFF7A29, 6, 4, 2)
+    const amberPt = new THREE.PointLight(0x855832, 6, 4, 2)
     amberPt.position.set(-0.5, 1.5, 0.5)
     scene.add(amberPt)
 
-    const tealPt = new THREE.PointLight(0x4CCFB0, 4, 4, 2)
+    const tealPt = new THREE.PointLight(0x4C6762, 4, 4, 2)
     tealPt.position.set(1.0, 1.0, 0.8)
     scene.add(tealPt)
 
     // ── Floor grid ────────────────────────────────────────────────────────
-    const grid = new THREE.GridHelper(4, 30, 0x1a3344, 0x0d1f2a)
+    const grid = new THREE.GridHelper(4, 30, 0x4C6762, 0x2a3a36)
     scene.add(grid)
 
     // ── 1m × 1m Table ─────────────────────────────────────────────────────
@@ -230,7 +230,7 @@ onMounted(async () => {
     }
 
     // "1m" dimension lines on the table edge
-    const dimMat = new THREE.LineBasicMaterial({ color: 0xFF7A29, transparent: true, opacity: 0.7 })
+    const dimMat = new THREE.LineBasicMaterial({ color: 0x855832, transparent: true, opacity: 0.7 })
     const frontY = tableSurface + 0.005
     const frontZ = tableD / 2 + 0.03
     const sideX = tableW / 2 + 0.03
@@ -258,7 +258,7 @@ onMounted(async () => {
       canvas.height = 48
       const ctx = canvas.getContext('2d')
       ctx.font = 'bold 28px Inter, sans-serif'
-      ctx.fillStyle = '#FF7A29'
+      ctx.fillStyle = '#855832'
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
       ctx.fillText(text, 64, 24)
@@ -280,15 +280,15 @@ onMounted(async () => {
 
     // YAM materials (amber/teal)
     const yamMats = [
-      mkMat(0xCC5500, 0xFF7A29, 0.15),
-      mkMat(0xFF8C3A, 0xFF7A29, 0.2),
-      mkMat(0xE06020, 0xFF7A29, 0.15),
-      mkMat(0x2EB89A, 0x4CCFB0, 0.2),
-      mkMat(0xFF7A29, 0xFF7A29, 0.25),
-      mkMat(0x25A88A, 0x4CCFB0, 0.2),
+      mkMat(0x6e4828, 0x855832, 0.15),
+      mkMat(0x9A6B42, 0x855832, 0.2),
+      mkMat(0x7D5530, 0x855832, 0.15),
+      mkMat(0x3D7A6A, 0x4C6762, 0.2),
+      mkMat(0x855832, 0x855832, 0.25),
+      mkMat(0x3A706A, 0x4C6762, 0.2),
     ]
-    const yamGripMat = mkMat(0x3a3a4a, 0xFF7A29, 0.12, 0.9, 0.15)
-    const yamTipMat  = mkMat(0x5DDFC0, 0x4CCFB0, 0.5, 0.5, 0.2)
+    const yamGripMat = mkMat(0x3a3a4a, 0x855832, 0.12, 0.9, 0.15)
+    const yamTipMat  = mkMat(0x5A8A7E, 0x4C6762, 0.5, 0.5, 0.2)
 
     // BIG YAM materials (silver/blue)
     const bigMats = [
@@ -536,7 +536,7 @@ onMounted(async () => {
       ctx.fillText(text, 256, 8)
       if (subtext) {
         ctx.font = '22px Inter, sans-serif'
-        ctx.fillStyle = '#FF7A29'
+        ctx.fillStyle = '#855832'
         ctx.fillText(subtext, 256, 52)
       }
       const tex = new THREE.CanvasTexture(canvas)
@@ -683,8 +683,8 @@ onUnmounted(() => {
   height: 600px;
   border-radius: 16px;
   overflow: hidden;
-  border: 1px solid rgba(255, 122, 41, 0.18);
-  box-shadow: 0 0 60px rgba(255, 122, 41, 0.07), 0 0 120px rgba(76, 207, 176, 0.04);
+  border: 1px solid rgba(133, 88, 50, 0.18);
+  box-shadow: 0 0 60px rgba(133, 88, 50, 0.07), 0 0 120px rgba(76, 103, 98, 0.04);
   margin: 24px 0;
 }
 
@@ -715,15 +715,15 @@ onUnmounted(() => {
 }
 
 .pill:hover {
-  border-color: rgba(255, 122, 41, 0.5);
+  border-color: rgba(133, 88, 50, 0.5);
   color: #fff;
 }
 
 .pill-active {
-  border-color: #FF7A29;
-  background: rgba(255, 122, 41, 0.2);
-  color: #FF7A29;
-  box-shadow: 0 0 16px rgba(255, 122, 41, 0.3);
+  border-color: #855832;
+  background: rgba(133, 88, 50, 0.2);
+  color: #855832;
+  box-shadow: 0 0 16px rgba(133, 88, 50, 0.3);
 }
 
 .pill-sub {
@@ -738,7 +738,7 @@ onUnmounted(() => {
   right: 16px;
   width: 220px;
   background: rgba(8, 12, 24, 0.88);
-  border: 1px solid rgba(255, 122, 41, 0.2);
+  border: 1px solid rgba(133, 88, 50, 0.2);
   border-radius: 12px;
   padding: 12px 14px;
   z-index: 10;
@@ -755,7 +755,7 @@ onUnmounted(() => {
 .slider-title {
   font-size: 0.75rem;
   font-weight: 700;
-  color: #FF7A29;
+  color: #855832;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -803,9 +803,9 @@ onUnmounted(() => {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #FF7A29;
+  background: #855832;
   cursor: pointer;
-  box-shadow: 0 0 6px rgba(255, 122, 41, 0.5);
+  box-shadow: 0 0 6px rgba(133, 88, 50, 0.5);
 }
 
 .slider-val {
@@ -822,17 +822,17 @@ onUnmounted(() => {
   margin-top: 8px;
   padding: 5px;
   border-radius: 6px;
-  border: 1px solid rgba(76, 207, 176, 0.3);
-  background: rgba(76, 207, 176, 0.1);
-  color: #4CCFB0;
+  border: 1px solid rgba(76, 103, 98, 0.3);
+  background: rgba(76, 103, 98, 0.1);
+  color: #4C6762;
   font-size: 0.7rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
 }
 .reset-btn:hover {
-  background: rgba(76, 207, 176, 0.2);
-  border-color: #4CCFB0;
+  background: rgba(76, 103, 98, 0.2);
+  border-color: #4C6762;
 }
 
 .control-toggle {
@@ -841,9 +841,9 @@ onUnmounted(() => {
   right: 16px;
   padding: 6px 14px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 122, 41, 0.3);
+  border: 1px solid rgba(133, 88, 50, 0.3);
   background: rgba(8, 12, 24, 0.8);
-  color: #FF7A29;
+  color: #855832;
   font-size: 0.72rem;
   font-weight: 600;
   cursor: pointer;
@@ -852,8 +852,8 @@ onUnmounted(() => {
   transition: all 0.2s;
 }
 .control-toggle:hover {
-  background: rgba(255, 122, 41, 0.15);
-  border-color: #FF7A29;
+  background: rgba(133, 88, 50, 0.15);
+  border-color: #855832;
 }
 
 .compare-overlay {
@@ -888,8 +888,8 @@ onUnmounted(() => {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 122, 41, 0.15);
-  border-top-color: #FF7A29;
+  border: 2px solid rgba(133, 88, 50, 0.15);
+  border-top-color: #855832;
   animation: spin 0.85s linear infinite;
 }
 
