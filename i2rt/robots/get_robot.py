@@ -139,8 +139,10 @@ def get_yam_robot(
     pinned_cpu: int | None = None,
     joint_state_saver_factory: Optional[Callable[[], Any]] = None,
     set_realtime_and_pin_callback: Optional[Callable[[int], None]] = None,
+    limit_gripper_force: float = 50.0,
     start_thread: bool = True,
-    start_server: bool | None = None
+    start_server: bool | None = None,
+    logfile: str | None = None
 ) -> "Robot":
     """Create a YAM-family robot (real or sim).
 
@@ -266,7 +268,8 @@ def get_yam_robot(
         pinned_cpu=pinned_cpu,
         joint_state_saver_factory=joint_state_saver_factory,
         set_realtime_and_pin_callback=set_realtime_and_pin_callback,
-        start_server=start_thread
+        start_server=start_thread,
+        logfile=logfile
     )
 
     if with_gripper:
@@ -276,6 +279,6 @@ def get_yam_robot(
             enable_gripper_calibration=gripper_needs_cal,
             gripper_type=gripper_type,
             arm_type=arm_type,
-            limit_gripper_force=50.0,
+            limit_gripper_force=limit_gripper_force,
         )
     return get_robot()

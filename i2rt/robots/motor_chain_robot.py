@@ -1,4 +1,5 @@
 import copy
+import json
 import logging
 import os
 import threading
@@ -89,7 +90,8 @@ class MotorChainRobot(Robot):
         pinned_cpu: int | None = None,
         joint_state_saver_factory: Optional[Callable[[], Any]] = None,
         set_realtime_and_pin_callback: Optional[Callable[[int], None]] = None,
-        start_server: bool = True
+        start_server: bool = True,
+        logfile: str | None = None
     ) -> None:
         # Set up CPU pinning and real-time scheduling if requested
         if pinned_cpu is not None and set_realtime_and_pin_callback is not None:
@@ -210,6 +212,11 @@ class MotorChainRobot(Robot):
         if not zero_gravity_mode:
             # set current qpos as target pos with the default PD parameters
             self.command_joint_pos(self._joint_state.pos)
+
+        if logfile is not None:
+            self.logfile = open(logfile, 'w')
+        else:
+            self.logfile = None
 
     def __repr__(self) -> str:
         return f"MotorChainRobot(motor_chain={self.motor_chain})"
@@ -373,6 +380,12 @@ class MotorChainRobot(Robot):
                 )
                 self.motor_chain.start_thread()
             self._update_joint_state(motor_torques, joint_commands)
+            if self.logfile is not None:
+                data = {
+                    "time": time.time_ns(),
+                    "joint.pos": self._joint_state.pos
+                }
+                print(json.dumps(data), file=self.logfile)
 
     def _update_joint_state(
         self,
@@ -610,6 +623,9 @@ class MotorChainRobot(Robot):
     def close(self) -> None:
         """Safely close the robot by setting all torques to zero."""
         # self.move_to_zero()
+        if self.logfile is not None:
+            self.logfile.close()
+            self.logfile = None
         self._stop_event.set()  # Signal the thread to stop
         self._server_thread.join()  # Wait for the thread to finish
         self.motor_chain.close()
