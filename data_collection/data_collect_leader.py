@@ -140,7 +140,7 @@ def main(args: Args) -> None:
                 robot._robot.update(separate_thread=False)
                 current_joint_pos, current_button = robot.get_info()
         
-        button1_pressed = current_button[1] > 0.5:
+        button1_pressed = current_button[1] > 0.5
         if button1_pressed and not prev_button1_pressed:
             client_robot.log_message("end_episode")
         prev_button1_pressed = button1_pressed
