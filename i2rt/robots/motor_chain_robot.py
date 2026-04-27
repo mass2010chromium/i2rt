@@ -383,7 +383,7 @@ class MotorChainRobot(Robot):
             if self.logfile is not None:
                 data = {
                     "time": time.time_ns(),
-                    "joint.pos": self._joint_state.pos
+                    "joint.pos": self._joint_state.pos.tolist()
                 }
                 print(json.dumps(data), file=self.logfile)
 

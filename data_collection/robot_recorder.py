@@ -31,7 +31,7 @@ class ServerRobot:
         self._server.bind("command_joint_pos", self._robot.command_joint_pos)
         self._server.bind("command_joint_state", self._robot.command_joint_state)
         self._server.bind("get_observations", self._robot.get_observations)
-        self._server.bind("log_message", self._robot.get_observations)
+        self._server.bind("log_message", self.log_message)
 
     def serve(self) -> None:
         """Serve the leader robot."""
@@ -49,7 +49,7 @@ class ServerRobot:
 @dataclass
 class Args:
     gripper: Literal["crank_4310", "linear_3507", "linear_4310", "yam_teaching_handle", "no_gripper"] = (
-        "yam_teaching_handle"
+        "linear_4310"
     )
     server_port: int = DEFAULT_ROBOT_PORT
     can_channel: str = "can0"
@@ -66,8 +66,8 @@ def main(args: Args) -> None:
     event_log_filename = f"{args.log_dir}/teleop_event_{t}.log"
 
     # TODO: do calibration in the proper order
-    robot = get_yam_robot(channel=args.can_channel, gripper_type=gripper_type, ee_mass=args.ee_mass, start_thread=False
-        limit_gripper_force=15.0, logfile=log_filename)
+    robot = get_yam_robot(channel=args.can_channel, gripper_type=gripper_type, ee_mass=args.ee_mass, start_thread=False,
+        limit_gripper_force=15.0, logfile=robot_log_filename)
     robot.start_server(separate_thread=False)
     server_robot = ServerRobot(robot, args.server_port, event_logfile=event_log_filename)
     try:
