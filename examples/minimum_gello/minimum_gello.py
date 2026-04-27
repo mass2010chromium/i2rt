@@ -1,6 +1,7 @@
 import time
 from dataclasses import dataclass
 from typing import Dict, Literal, Optional
+import threading
 
 import mujoco
 import mujoco.viewer
@@ -120,18 +121,20 @@ class Args:
 def main(args: Args) -> None:
     gripper_type = GripperType.from_string_name(args.gripper)
 
-    if "remote" not in args.mode:
-        robot = get_yam_robot(channel=args.can_channel, gripper_type=gripper_type, ee_mass=args.ee_mass)
-
     if args.mode == "follower":
+        # TODO: do calibration in the proper order
+        robot = get_yam_robot(channel=args.can_channel, gripper_type=gripper_type, ee_mass=args.ee_mass, start_thread=False)
+        robot.start_server(separate_thread=False)
         server_robot = ServerRobot(robot, args.server_port)
         server_robot.serve()
     elif args.mode == "leader":
-        robot = YAMLeaderRobot(robot)
+        _robot = get_yam_robot(channel=args.can_channel, gripper_type=gripper_type, ee_mass=args.ee_mass, start_thread=False)
+        robot = YAMLeaderRobot(_robot)
         robot_current_kp = robot._robot._kp
         client_robot = ClientRobot(args.server_port, host=args.server_host)
 
         # sync the robot state
+        robot._robot.update(separate_thread=False)
         current_joint_pos, current_button = robot.get_info()
         current_follower_joint_pos = client_robot.get_joint_pos()
         print(f"Current leader joint pos: {current_joint_pos}")
@@ -142,6 +145,7 @@ def main(args: Args) -> None:
                 current_joint_pos = joint_pos
                 follower_command_joint_pos = current_joint_pos * i / 100 + current_follower_joint_pos * (1 - i / 100)
                 client_robot.command_joint_pos(follower_command_joint_pos)
+                robot._robot.update(separate_thread=False)
                 time.sleep(0.03)
 
         synchronized = False
@@ -159,6 +163,7 @@ def main(args: Args) -> None:
                 synchronized = not synchronized
                 while current_button[0] > 0.5:
                     time.sleep(0.03)
+                    robot._robot.update(separate_thread=False)
                     current_joint_pos, current_button = robot.get_info()
 
             current_follower_joint_pos = client_robot.get_joint_pos()
@@ -167,8 +172,9 @@ def main(args: Args) -> None:
                 client_robot.command_joint_pos(current_joint_pos)
                 # this will set the bilateral force in joint space proportional to the bilateral kp
                 robot.command_joint_pos(current_follower_joint_pos[:6])
+            robot._robot.update(separate_thread=False)
 
-            time.sleep(0.01)
+            time.sleep(0.001)
     elif "visualizer" in args.mode:
         if args.mode == "visualizer_remote":
             robot = ClientRobot(args.server_port, host=args.server_host)

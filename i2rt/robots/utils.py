@@ -675,6 +675,7 @@ def detect_gripper_limits(
     max_duration: float = 2.0,
     position_threshold: float = 0.01,
     check_interval: float = 0.1,
+    separate_thread: bool = True
 ) -> Tuple[float, float]:
     """
     Detect gripper limits by applying test torques and monitoring position changes.
@@ -717,7 +718,9 @@ def detect_gripper_limits(
 
         while time.time() - start_time < max_duration:
             motor_chain.set_commands(torques=test_torques)
-            time.sleep(check_interval)
+            if not separate_thread:
+                motor_chain.update_tick()
+            #time.sleep(check_interval)
 
             states = motor_chain.read_states()
             current_pos = states[gripper_index].pos
@@ -732,7 +735,7 @@ def detect_gripper_limits(
                     position_stable_count = 0
 
                 # Check if gripper has hit limit (position stable)
-                if position_stable_count >= 3:
+                if position_stable_count >= 30:
                     logger.info(f"Gripper limit detected: pos={current_pos:.4f}")
                     break
 

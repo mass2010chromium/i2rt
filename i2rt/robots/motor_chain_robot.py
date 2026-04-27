@@ -89,6 +89,7 @@ class MotorChainRobot(Robot):
         pinned_cpu: int | None = None,
         joint_state_saver_factory: Optional[Callable[[], Any]] = None,
         set_realtime_and_pin_callback: Optional[Callable[[int], None]] = None,
+        start_server: bool = True
     ) -> None:
         # Set up CPU pinning and real-time scheduling if requested
         if pinned_cpu is not None and set_realtime_and_pin_callback is not None:
@@ -97,6 +98,8 @@ class MotorChainRobot(Robot):
         self._joint_state_saver_factory = joint_state_saver_factory
         self._set_realtime_and_pin_callback = set_realtime_and_pin_callback
         self.temp_record_flag = temp_record_flag
+        self.motor_chain = motor_chain
+        self._gripper_index = gripper_index
         if gripper_index is not None:
             assert gripper_index == len(motor_chain) - 1, (
                 "Gripper index should be the last one, but got {gripper_index}"
@@ -107,18 +110,7 @@ class MotorChainRobot(Robot):
                 f"initializing motorchain robot, gripper_limits: {gripper_limits}, enable_gripper_calibration: {enable_gripper_calibration}"
             )
             if gripper_limits is None and enable_gripper_calibration:
-                logger = logging.getLogger(__name__)
-                logger.info("Auto-detecting gripper limits...")
-                detected_limits = detect_gripper_limits(
-                    motor_chain=motor_chain,
-                    gripper_index=gripper_index,
-                    test_torque=test_torque,
-                    max_duration=test_duration,
-                    position_threshold=position_threshold,
-                    check_interval=check_interval,
-                )
-                gripper_limits = np.array(detected_limits)
-                logger.info(f"Gripper limits auto-detected: {gripper_limits}")
+                gripper_limits = self.calibrate_gripper(test_torque=test_torque, test_duration=test_duration, position_threshold=position_threshold, check_interval=check_interval, separate_thread=start_server)
             elif gripper_limits is None:
                 raise ValueError(
                     f"{self}: Gripper limits are required if gripper index is provided and auto-calibration is disabled."
@@ -131,14 +123,12 @@ class MotorChainRobot(Robot):
         self._last_gripper_command_qpos = 1  # initialize as fully open
         assert clip_motor_torque >= 0.0
         self._clip_motor_torque = clip_motor_torque
-        self.motor_chain = motor_chain
         self.use_gravity_comp = use_gravity_comp
         self.gravity_comp_factor = (
             gravity_comp_factor if gravity_comp_factor is not None else np.ones(len(motor_chain))
         )
 
         # variables for gripper effort limiting
-        self._gripper_index = gripper_index
         self.remapper = JointMapper({}, len(motor_chain))  # so it works without gripper
         self._gripper_limits = gripper_limits
 
@@ -212,8 +202,10 @@ class MotorChainRobot(Robot):
 
         self._last_motor_torques: Optional[np.ndarray] = None
         self._stop_event = threading.Event()  # Add a stop event
-        self._server_thread = threading.Thread(target=self.start_server, name="robot_server")
-        self._server_thread.start()
+        if start_server:
+            self.start_server()
+        else:
+            self._server_thread = None
 
         if not zero_gravity_mode:
             # set current qpos as target pos with the default PD parameters
@@ -280,11 +272,31 @@ class MotorChainRobot(Robot):
             "gripper_index": self._gripper_index,
         }
 
-    def start_server(self) -> None:
+    def calibrate_gripper(self, test_torque, test_duration, position_threshold, check_interval, separate_thread: bool = True):
+        logger = logging.getLogger(__name__)
+        logger.info("Auto-detecting gripper limits...")
+        detected_limits = detect_gripper_limits(
+            motor_chain=self.motor_chain,
+            gripper_index=self._gripper_index,
+            test_torque=test_torque,
+            max_duration=test_duration,
+            position_threshold=position_threshold,
+            check_interval=check_interval,
+            separate_thread=separate_thread
+        )
+        gripper_limits = np.array(detected_limits)
+        logger.info(f"Gripper limits auto-detected: {gripper_limits}")
+        return gripper_limits
+
+    def start_server(self, separate_thread: bool = True) -> None:
+        self._server_thread = threading.Thread(target=self._start_server, name="robot_server", args=(separate_thread,))
+        self._server_thread.start()
+
+    def _start_server(self, separate_thread: bool = True) -> None:
         """Start the server."""
         last_time = time.time()
         iteration_count = 0
-        self.update()
+        self.update(separate_thread=separate_thread)
 
         logging.info("initializing, ....")
 
@@ -292,7 +304,7 @@ class MotorChainRobot(Robot):
             current_time = time.time()
             elapsed_time = current_time - last_time
 
-            self.update()
+            self.update(separate_thread=separate_thread)
             if not self.motor_chain.running:
                 raise RuntimeError(f"{self}: motor_chain_robot's motor chain is not running, exiting the robot server")
             time.sleep(0.004)
@@ -310,7 +322,7 @@ class MotorChainRobot(Robot):
                 last_time = current_time
                 iteration_count = 0
 
-    def update(self) -> None:
+    def update(self, separate_thread: bool = True) -> None:
         """Update the robot.
 
         Send Torques and update the joint state.
@@ -349,7 +361,9 @@ class MotorChainRobot(Robot):
                     max(self._gripper_limits),
                 )
                 self._last_gripper_command_qpos = joint_commands.pos[self._gripper_index]
-            if not self.motor_chain.start_thread_flag:
+            if not separate_thread:
+                self.motor_chain.update_tick()
+            elif not self.motor_chain.start_thread_flag:
                 self.motor_chain.set_commands(
                     motor_torques,
                     pos=joint_commands.pos,
@@ -358,7 +372,6 @@ class MotorChainRobot(Robot):
                     kd=joint_commands.kd,
                 )
                 self.motor_chain.start_thread()
-                self.motor_chain.start_thread_flag = True
             self._update_joint_state(motor_torques, joint_commands)
 
     def _update_joint_state(
@@ -647,7 +660,7 @@ if __name__ == "__main__":
 
     if args.operation_mode == "gravity_comp":
         while True:
-            # print(robot.get_observations())
+            print(robot.get_observations())
             time.sleep(1)
     elif args.operation_mode == "test_gripper":
         assert gripper_type != GripperType.YAM_TEACHING_HANDLE, (

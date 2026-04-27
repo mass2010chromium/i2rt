@@ -443,7 +443,9 @@ class DMChainCanInterface(MotorChain):
         self.commands = starting_command
         self.command_lock = threading.RLock()
 
-        self.start_thread_flag = start_thread
+        self.start_thread_lock = threading.Lock()
+        self.start_thread_flag = False
+        self.control_thread = None
         if start_thread:
             self.start_thread()
 
@@ -511,18 +513,67 @@ class DMChainCanInterface(MotorChain):
 
     def start_thread(self) -> None:
         logging.info("starting separate thread for control loop")
-        thread = threading.Thread(target=self._set_torques_and_update_state)
-        thread.start()
-        time.sleep(0.1)
-        while self.state is None:
+        with self.start_thread_lock:
+            if self.start_thread_flag:
+                print("Thread already started, exiting")
+                return
+
+            self.control_thread = threading.Thread(target=self._set_torques_and_update_state)
+            self.control_thread.start()
             time.sleep(0.1)
-            logging.info("waiting for the first state")
+            while self.state is None:
+                time.sleep(0.1)
+                logging.info("waiting for the first state")
+            logging.info("Started.")
+            self.start_thread_flag = True
+
+    def update_tick(self):
+        # Update state
+        with self.command_lock:
+            try:
+                motor_feedback = self._set_commands(self.commands)
+            except RuntimeError as e:
+                if "Motor error detected" in str(e):
+                    logging.warning(f"Motor error in control loop, attempting recovery: {e}")
+                    recovered = self._try_recover_motors()
+                    if recovered:
+                        logging.warning("Motor recovery successful, continuing control loop")
+                        return
+                    else:
+                        self.running = False
+                        raise
+                raise
+
+            errors = np.array([motor_feedback[i].error_code != "0x1" for i in range(len(motor_feedback))])
+            if np.any(errors):
+                logging.warning(f"Motor errors detected in feedback: {errors}")
+                recovered = self._try_recover_motors(motor_feedback)
+                if recovered:
+                    logging.warning("Motor recovery successful, continuing control loop")
+                    return
+                self.running = False
+                logging.error(f"motor errors: {errors}")
+                raise Exception(
+                    "motors have unrecoverable errors after recovery attempts, stopping control loop"
+                )
+
+        with self.state_lock:
+            self.state = motor_feedback
+            self._update_absolute_positions(motor_feedback)
+        if self.same_bus_device_driver is not None:
+            time.sleep(0.001)
+            with self.same_bus_device_lock:
+                # assume the same bus device is a passive input device (no commands to send) for now.
+                self.same_bus_device_states = self.same_bus_device_driver.read_states()
 
     def _set_torques_and_update_state(self) -> None:
         """
         Control loop for updating motor torques and states at a fixed frequency.
         If step_time > EXPECTED_CONTROL_PERIODs, it will report the number of step_time > EXPECTED_CONTROL_PERIODs and mean step_time every REPORT_INTERVAL seconds.
         """
+        print("#######################################")
+        print("          START CONTROL LOOP")
+        print("#######################################")
         last_step_time = time.time()
         step_time_exceed_count = 0
         step_time_sum = 0.0
@@ -551,44 +602,7 @@ class DMChainCanInterface(MotorChain):
                         step_time_sum = 0.0
                         step_time_count = 0
                         report_start_time = curr_time
-
-                    # Update state
-                    with self.command_lock:
-                        try:
-                            motor_feedback = self._set_commands(self.commands)
-                        except RuntimeError as e:
-                            if "Motor error detected" in str(e):
-                                logging.warning(f"Motor error in control loop, attempting recovery: {e}")
-                                recovered = self._try_recover_motors()
-                                if recovered:
-                                    logging.warning("Motor recovery successful, continuing control loop")
-                                    continue
-                                else:
-                                    self.running = False
-                                    raise
-                            raise
-
-                        errors = np.array([motor_feedback[i].error_code != "0x1" for i in range(len(motor_feedback))])
-                        if np.any(errors):
-                            logging.warning(f"Motor errors detected in feedback: {errors}")
-                            recovered = self._try_recover_motors(motor_feedback)
-                            if recovered:
-                                logging.warning("Motor recovery successful, continuing control loop")
-                                continue
-                            self.running = False
-                            logging.error(f"motor errors: {errors}")
-                            raise Exception(
-                                "motors have unrecoverable errors after recovery attempts, stopping control loop"
-                            )
-
-                    with self.state_lock:
-                        self.state = motor_feedback
-                        self._update_absolute_positions(motor_feedback)
-                    if self.same_bus_device_driver is not None:
-                        time.sleep(0.001)
-                        with self.same_bus_device_lock:
-                            # assume the same bus device is a passive input device (no commands to send) for now.
-                            self.same_bus_device_states = self.same_bus_device_driver.read_states()
+                    self.update_tick()
                     time.sleep(0)  # yield GIL so other threads can acquire locks
                     self._rate_recorder.track()
                 except Exception as e:

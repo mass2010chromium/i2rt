@@ -62,6 +62,7 @@ def _get_gripper_only_robot(
     channel: str = "can0",
     gripper_type: GripperType = GripperType.LINEAR_4310,
     sim: bool = False,
+    start_thread: bool = True
 ) -> "Robot":
     """Create a gripper-only robot (no arm).
 
@@ -107,7 +108,7 @@ def _get_gripper_only_robot(
         channel,
         motor_chain_name="gripper_only",
         receive_mode=ReceiveMode.p16,
-        start_thread=True,
+        start_thread=start_thread,
     )
 
     return MotorChainRobot(
@@ -135,8 +136,11 @@ def get_yam_robot(
     ee_inertia: Optional[np.ndarray] = None,
     gravity_comp_factor: Optional[np.ndarray] = None,
     sim: bool = False,
+    pinned_cpu: int | None = None,
     joint_state_saver_factory: Optional[Callable[[], Any]] = None,
     set_realtime_and_pin_callback: Optional[Callable[[int], None]] = None,
+    start_thread: bool = True,
+    start_server: bool | None = None
 ) -> "Robot":
     """Create a YAM-family robot (real or sim).
 
@@ -151,6 +155,9 @@ def get_yam_robot(
             Overrides the arm-type default when provided.
         sim: If True, return a SimRobot instead of connecting to real hardware.
     """
+    if start_server is None:
+        start_server = start_thread
+
     # --- Gripper-only path (no arm) -------------------------------------------
     if arm_type == ArmType.NO_ARM:
         return _get_gripper_only_robot(channel=channel, gripper_type=gripper_type, sim=sim)
@@ -242,7 +249,8 @@ def get_yam_robot(
     logging.info(f"adjusted motor_offsets: {motor_chain.motor_offset.tolist()}")
 
     # Start the control thread with corrected offsets.
-    motor_chain.start_thread()
+    if start_thread:
+        motor_chain.start_thread()
     logging.info(f"YAM initial motor_states: {motor_chain.read_states()}")
 
     get_robot = partial(
@@ -255,8 +263,10 @@ def get_yam_robot(
         kp=kp,
         kd=kd,
         zero_gravity_mode=zero_gravity_mode,
+        pinned_cpu=pinned_cpu,
         joint_state_saver_factory=joint_state_saver_factory,
         set_realtime_and_pin_callback=set_realtime_and_pin_callback,
+        start_server=start_thread
     )
 
     if with_gripper:
