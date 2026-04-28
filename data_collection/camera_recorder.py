@@ -8,7 +8,7 @@ out_dir = sys.argv[1]
 out_path = os.path.join(out_dir, 'images')
 os.makedirs(out_path, exist_ok=True)
 
-meta_file = open(f"{out_dir}/image_timestamps", 'w')
+meta_file = open(f"{out_dir}/image_timestamps", 'a')
 cap1 = cv2.VideoCapture(4)
 cap2 = cv2.VideoCapture(10)
 

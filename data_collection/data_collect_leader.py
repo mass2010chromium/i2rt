@@ -92,7 +92,7 @@ class Args:
     )
     server_host: str = "localhost"
     server_port: int = DEFAULT_ROBOT_PORT
-    can_channel: str = "can0"
+    can_channel: str = "can1"
     bilateral_kp: float = 0.0
     ee_mass: Optional[float] = None
     """Override end-effector (link_6) mass in kg for gravity compensation. Defaults to the value in the XML."""
@@ -132,6 +132,7 @@ def main(args: Args) -> None:
                 robot.update_kp_kd(kp=robot_default_kp * args.bilateral_kp, kd=np.ones(6) * 0.0)
                 robot.command_joint_pos(current_joint_pos[:6])
                 slow_move(current_joint_pos)
+                print("Synchronized, ready for teleop")
             else:
                 print("clear bilateral pd")
                 robot.update_kp_kd(kp=np.ones(6) * 0.0, kd=np.ones(6) * 0.0)
@@ -149,6 +150,7 @@ def main(args: Args) -> None:
                 client_robot.log_message("end_episode")
             else:
                 print("Resuming teleop")
+                client_robot.log_message("start_episode")
                 robot.update_kp_kd(kp=robot_default_kp * args.bilateral_kp, kd=np.ones(6) * 0.0)
             frozen = not frozen
         prev_button1_pressed = button1_pressed

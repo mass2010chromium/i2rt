@@ -14,12 +14,19 @@ joint_pos_timestamps = []
 joint_pos = []
 n_episodes = 0
 first_episode = None
+previous_episode = None
 event_timestamps = []
 event_text = []
 
+control_messages = [
+    "start_episode",
+    "end_episode",
+    "cancel"
+]
+
 # Grab the timestamp. Strip out the .log
 time_from_fname = lambda s: int(s.rsplit('_', 1)[1][:-4])
-robot_data_files = sorted(glob.glob("outputs/robot_joint*"), key=time_from_fname)
+robot_data_files = sorted(glob.glob(f"{out_dir}/robot_joint*"), key=time_from_fname)
 for fname in robot_data_files:
     with open(fname, 'r') as robot_joint_data:
         for line in robot_joint_data:
@@ -36,9 +43,15 @@ for fname in robot_data_files:
         for line in event_data:
             try:
                 data = json.loads(line)
-                if data['msg'] != "end_episode":
+                if data['msg'] == 'cancel':
+                    if previous_episode is not None:
+                        del event_timestamps[previous_episode]
+                        del event_text[previous_episode]
+                        previous_episode = None
+                elif data['msg'] not in control_messages:
                     if first_episode is None:
                         first_episode = len(event_timestamps)
+                    previous_episode = len(event_timestamps)
                     n_episodes += 1
                 event_timestamps.append(data['time'])
                 event_text.append(data['msg'])
@@ -101,6 +114,17 @@ def read_image_torch(image_path):
 episode_idx = 0
 while True:
     episode_task = event_text[event_idx]
+
+    # Scroll to the first `start_episode`
+    while event_text[event_idx] != 'start_episode':
+        # In case of spurious activations
+        event_idx += 1
+    # And also scroll the camera images forward
+    event_start_time = event_timestamps[event_idx]
+    while cur_time < event_start_time:
+        video_index += 1
+        cur_time = image_timestamps[video_index]
+
     next_event_time = event_timestamps[event_idx + 1]
     cur_time = image_timestamps[video_index]
 
@@ -134,7 +158,7 @@ while True:
 
     # Scroll to next episode start event...
     event_idx += 1
-    while event_text[event_idx] == 'end_episode':
+    while event_text[event_idx] in control_messages:
         # In case of spurious activations
         event_idx += 1
     # And also scroll the camera images forward
