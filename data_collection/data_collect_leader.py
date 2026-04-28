@@ -103,7 +103,8 @@ def main(args: Args) -> None:
 
     _robot = get_yam_robot(channel=args.can_channel, gripper_type=gripper_type, ee_mass=args.ee_mass, start_thread=False)
     robot = YAMLeaderRobot(_robot)
-    robot_current_kp = robot._robot._kp
+    robot_default_kp = robot._robot._kp
+    robot_default_kd = robot._robot._kd
     client_robot = ClientRobot(args.server_port, host=args.server_host)
 
     # sync the robot state
@@ -123,11 +124,12 @@ def main(args: Args) -> None:
 
     synchronized = False
     prev_button1_pressed = False
+    frozen = False
     while True:
         current_joint_pos, current_button = robot.get_info()
         if current_button[0] > 0.5:
             if not synchronized:
-                robot.update_kp_kd(kp=robot_current_kp * args.bilateral_kp, kd=np.ones(6) * 0.0)
+                robot.update_kp_kd(kp=robot_default_kp * args.bilateral_kp, kd=np.ones(6) * 0.0)
                 robot.command_joint_pos(current_joint_pos[:6])
                 slow_move(current_joint_pos)
             else:
@@ -142,12 +144,22 @@ def main(args: Args) -> None:
         
         button1_pressed = current_button[1] > 0.5
         if button1_pressed and not prev_button1_pressed:
-            client_robot.log_message("end_episode")
+            if not frozen:
+                print("Freezing arm, stopping episode")
+                client_robot.log_message("end_episode")
+            else:
+                print("Resuming teleop")
+                robot.update_kp_kd(kp=robot_default_kp * args.bilateral_kp, kd=np.ones(6) * 0.0)
+            frozen = not frozen
         prev_button1_pressed = button1_pressed
 
         current_follower_joint_pos = client_robot.get_joint_pos()
 
-        if synchronized:
+        if frozen:
+            robot.update_kp_kd(kp=robot_default_kp, kd=robot_default_kd)
+            robot.command_joint_pos(current_follower_joint_pos[:6])
+
+        elif synchronized:
             client_robot.command_joint_pos(current_joint_pos)
             # this will set the bilateral force in joint space proportional to the bilateral kp
             robot.command_joint_pos(current_follower_joint_pos[:6])
