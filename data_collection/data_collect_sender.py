@@ -27,9 +27,15 @@ class Args:
 
 def main(args: Args) -> None:
     client_robot = Client(args.server_port, host=args.server_host)
+    save_task = '<enter task>'
     while True:
-        s = input()
-        client_robot.log_message(s)
+        s = input(save_task + " | ").strip()
+        if s == "cancel":
+            client_robot.log_message("cancel")
+            continue
+        elif s:
+            save_task = s
+        client_robot.log_message(save_task)
 
 if __name__ == "__main__":
     main(tyro.cli(Args))

@@ -1,4 +1,18 @@
 <html>
-<img src="cam1_latest.png"/>
-<img src="cam2_latest.png"/>
+<script language="javascript">
+function main() {
+    updateImage('cam1_latest.png', 'cam1', 1000);
+    updateImage('cam2_latest.png', 'cam2', 1000);
+}
+function updateImage(file, name, rate) {
+    obj = document.getElementById(name); // Get the image element by its name
+    obj.src = file + "?" + Math.random(); // Append a random number to the src to force reload
+
+    // Set the delay before calling the function again (e.g., 300000 milliseconds for 5 minutes)
+    setTimeout(function() {updateImage(file, name, rate)}, rate);
+}
+</script>
+<body onload="main();">
+<img id="cam1" src="cam1_latest.png"/>
+<img id="cam2" src="cam2_latest.png"/>
 </html>

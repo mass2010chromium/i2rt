@@ -6,12 +6,15 @@ import numpy as np
 import scipy
 import tqdm
 
+ACTION_MODE = "ee" #"joint"
+
 out_dir = sys.argv[1]
 image_timestamps = np.array([int(x.strip()) for x in open(f"{out_dir}/image_timestamps", 'r').readlines()])
 
 # Parsing robot log outputs. (more annoying)
-joint_pos_timestamps = []
-joint_pos = []
+state_observation_timestamps = []
+state_observation = []
+state_target = []
 n_episodes = 0
 first_episode = None
 previous_episode = None
@@ -24,6 +27,13 @@ control_messages = [
     "cancel"
 ]
 
+observation_keys = {
+    "joint": ('joint.pos', 'joint.target')
+    "ee": ('ee.pos', 'ee.target')
+}
+
+observation_key, target_key = observation_keys[ACTION_MODE]
+
 # Grab the timestamp. Strip out the .log
 time_from_fname = lambda s: int(s.rsplit('_', 1)[1][:-4])
 robot_data_files = sorted(glob.glob(f"{out_dir}/robot_joint*"), key=time_from_fname)
@@ -32,8 +42,9 @@ for fname in robot_data_files:
         for line in robot_joint_data:
             try:
                 data = json.loads(line)
-                joint_pos_timestamps.append(data['time'])
-                joint_pos.append(data['joint.pos'])
+                state_observation_timestamps.append(data['time'])
+                state_observation.append(data[observation_key])
+                state_target.append(data[target_key])
             except:
                 print(f"{fname}: Could not parse line: '{line}'")
                 continue
@@ -45,13 +56,16 @@ for fname in robot_data_files:
                 data = json.loads(line)
                 if data['msg'] == 'cancel':
                     if previous_episode is not None:
+                        if first_episode == previous_episode:
+                            first_episode = None
                         del event_timestamps[previous_episode]
                         del event_text[previous_episode]
                         previous_episode = None
+                        n_episodes -= 1
                 elif data['msg'] not in control_messages:
-                    if first_episode is None:
-                        first_episode = len(event_timestamps)
                     previous_episode = len(event_timestamps)
+                    if first_episode is None:
+                        first_episode = previous_episode
                     n_episodes += 1
                 event_timestamps.append(data['time'])
                 event_text.append(data['msg'])
@@ -60,7 +74,8 @@ for fname in robot_data_files:
                 continue
 
 # Joint positions synchronized with image timestamps by linear interpolation.
-joint_pos_interpolated = scipy.interpolate.make_interp_spline(np.array(joint_pos_timestamps), np.array(joint_pos), k=1)(image_timestamps)
+state_observation_interpolated = scipy.interpolate.make_interp_spline(np.array(state_observation_timestamps), np.array(state_observation), k=1)(image_timestamps)
+state_target_interpolated = scipy.interpolate.make_interp_spline(np.array(state_observation_timestamps), np.array(state_target), k=1)(image_timestamps)
 event_timestamps = np.array(event_timestamps)
 
 print("Parsed metadata files")
@@ -68,6 +83,7 @@ print(f"{len(image_timestamps)} images, {n_episodes} episodes")
 
 from lerobot.common.datasets.lerobot_dataset import LeRobotDataset
 
+#help(LeRobotDataset.create)
 # 1. Define the dataset metadata and features
 # 'observation.image' is for the camera feed
 # 'observation.state' is for the vector (e.g., joint angles)
@@ -76,6 +92,8 @@ dataset = LeRobotDataset.create(
     root=f"hf/{out_dir}",
     fps=30,
     robot_type="yam",
+    image_writer_threads=4,
+    image_writer_processes=4,
     features={
         "image": {
             "dtype": "video",
@@ -89,13 +107,14 @@ dataset = LeRobotDataset.create(
         },
         "state": {
             "dtype": "float32",
-            "shape": (7,),
-            "names": ["joint_1", "joint_2", "joint_3", "joint_4", "joint_5", "joint_6", "gripper"],
+            "shape": state_observation[0].shape,
+            #"names": ["joint_1", "joint_2", "joint_3", "joint_4", "joint_5", "joint_6", "gripper"],
+            "names": ["q_1", "q_2", "q_3", "q_4", "x", "y", "z", "gripper"],
         },
-        "action": {
+        "actions": {
             "dtype": "float32",
-            "shape": (7,),
-            "names": ["target_1", "target_2", "target_3", "target_4", "target_5", "target_6", "gripper"],
+            "shape": state_target[0].shape,
+            "names": ["q_1", "q_2", "q_3", "q_4", "x", "y", "z", "gripper"],
         },
     },
 )
@@ -103,6 +122,7 @@ dataset = LeRobotDataset.create(
 first_episode_start = event_timestamps[first_episode]
 video_index = np.searchsorted(image_timestamps, first_episode_start)
 event_idx = first_episode
+cur_time = image_timestamps[video_index]
 
 import torchvision
 resize_transform = torchvision.transforms.Resize((224, 224),
@@ -126,7 +146,6 @@ while True:
         cur_time = image_timestamps[video_index]
 
     next_event_time = event_timestamps[event_idx + 1]
-    cur_time = image_timestamps[video_index]
 
     print(f"Writing episode {episode_idx}...")
     time_delta = next_event_time - cur_time
@@ -135,11 +154,14 @@ while True:
     pbar = tqdm.tqdm(total=approx_frames)
     refresh_n = 0
     while cur_time < next_event_time:
+        cur = state_observation_interpolated[video_index].astype(np.float32)
+        target = state_target_interpolated[video_index].astype(np.float32)
+        action = np.array([*(target[:6] - cur[:6]), target[6]], dtype=np.float32)
         dataset.add_frame({
             "image": read_image_torch(f"{out_dir}/images/cam1_{video_index}.png"),
             "wrist_image": read_image_torch(f"{out_dir}/images/cam2_{video_index}.png"),
-            "state": joint_pos_interpolated[video_index].astype(np.float32),
-            "action": np.zeros(7).astype(np.float32),
+            "state": cur_q,
+            "actions": action,
             "task": episode_task
         })
         video_index += 1
@@ -166,3 +188,5 @@ while True:
     while cur_time < event_start_time:
         video_index += 1
         cur_time = image_timestamps[video_index]
+
+print("Done writing.")

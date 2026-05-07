@@ -8,12 +8,18 @@ out_dir = sys.argv[1]
 out_path = os.path.join(out_dir, 'images')
 os.makedirs(out_path, exist_ok=True)
 
+try:
+    with open(f"{out_dir}/image_timestamps", 'r') as image_stamps:
+        n_lines = len(image_stamps.readlines())
+except:
+    print("Could not open timestamps file")
+    n_lines = 0
 meta_file = open(f"{out_dir}/image_timestamps", 'a')
 cap1 = cv2.VideoCapture(4)
 cap2 = cv2.VideoCapture(10)
 
 i = 0
-j = 0
+j = n_lines
 t = time.time_ns()
 while True:
     res1, img1 = cap1.read()

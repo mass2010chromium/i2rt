@@ -1,3 +1,5 @@
+import os
+
 import json
 import time
 from dataclasses import dataclass
@@ -28,7 +30,9 @@ class ServerRobot:
 
         self._server.bind("num_dofs", self._robot.num_dofs)
         self._server.bind("get_joint_pos", self._robot.get_joint_pos)
+        self._server.bind("get_tcp_pose", self._robot.get_tcp_pose)
         self._server.bind("command_joint_pos", self._robot.command_joint_pos)
+        self._server.bind("command_tcp_pose", self._robot.command_tcp_pose)
         self._server.bind("command_joint_state", self._robot.command_joint_state)
         self._server.bind("get_observations", self._robot.get_observations)
         self._server.bind("log_message", self.log_message)
@@ -64,10 +68,11 @@ def main(args: Args) -> None:
     t = time.time_ns()
     robot_log_filename = f"{args.log_dir}/robot_joint_{t}.log"
     event_log_filename = f"{args.log_dir}/teleop_event_{t}.log"
+    os.makedirs(args.log_dir, exist_ok=True)
 
     # TODO: do calibration in the proper order
     robot = get_yam_robot(channel=args.can_channel, gripper_type=gripper_type, ee_mass=args.ee_mass, start_thread=False,
-        limit_gripper_force=15.0, logfile=robot_log_filename)
+        limit_gripper_force=0.125, logfile=robot_log_filename)
     robot.start_server(separate_thread=False)
     server_robot = ServerRobot(robot, args.server_port, event_logfile=event_log_filename)
     try:

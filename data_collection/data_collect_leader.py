@@ -36,7 +36,7 @@ class YAMLeaderRobot:
         self._robot.update_kp_kd(kp, kd)
 
 class ClientRobot(Robot):
-    """A simple client for a leader robot."""
+    """A simple client for a follower robot."""
 
     def __init__(self, port: int = DEFAULT_ROBOT_PORT, host: str = "127.0.0.1"):
         self._client = portal.Client(f"{host}:{port}")
@@ -50,34 +50,50 @@ class ClientRobot(Robot):
         return self._client.num_dofs().result()
 
     def get_joint_pos(self) -> np.ndarray:
-        """Get the current state of the leader robot.
+        """Get the current state of the follower robot.
 
         Returns:
-            T: The current state of the leader robot.
+            T: The current state of the follower robot.
         """
         return self._client.get_joint_pos().result()
 
+    def get_tcp_pose(self, site: str = None) -> np.ndarray:
+        """Get the current end effector pose of the follower.
+
+        Returns:
+            T: The current pose as a 4x4 matrix.
+        """
+        return self._client.get_tcp_pose(site).result()
+
     def command_joint_pos(self, joint_pos: np.ndarray) -> None:
-        """Command the leader robot to the given state.
+        """Command the follower robot to the given state.
 
         Args:
-            joint_pos (T): The state to command the leader robot to.
+            joint_pos (T): The state to command the follower robot to.
         """
         self._client.command_joint_pos(joint_pos)
 
-    def command_joint_state(self, joint_state: Dict[str, np.ndarray]) -> None:
-        """Command the leader robot to the given state.
+    def command_tcp_pose(self, tcp_pose: np.ndarray, gripper: float, site: str = None) -> None:
+        """Command the follower robot to the given SE3 pose
 
         Args:
-            joint_state (Dict[str, np.ndarray]): The state to command the leader robot to.
+            joint_pos (T): The state to command the follower robot to.
+        """
+        self._client.command_tcp_pose(tcp_pose, gripper, site)
+
+    def command_joint_state(self, joint_state: Dict[str, np.ndarray]) -> None:
+        """Command the follower robot to the given state.
+
+        Args:
+            joint_state (Dict[str, np.ndarray]): The state to command the follower robot to.
         """
         self._client.command_joint_state(joint_state)
 
     def get_observations(self) -> Dict[str, np.ndarray]:
-        """Get the current observations of the leader robot.
+        """Get the current observations of the follower robot.
 
         Returns:
-            Dict[str, np.ndarray]: The current observations of the leader robot.
+            Dict[str, np.ndarray]: The current observations of the follower robot.
         """
         return self._client.get_observations().result()
 
@@ -115,16 +131,20 @@ def main(args: Args) -> None:
     print(f"Current follower joint pos: {current_follower_joint_pos}")
 
     def slow_move(joint_pos: np.ndarray, duration: float = 1.0) -> None:
+        robot.update_kp_kd(kp=robot_default_kp, kd=robot_default_kd)
+        robot.command_joint_pos(joint_pos[:6])
         for i in range(100):
             current_joint_pos = joint_pos
             follower_command_joint_pos = current_joint_pos * i / 100 + current_follower_joint_pos * (1 - i / 100)
             client_robot.command_joint_pos(follower_command_joint_pos)
             robot._robot.update(separate_thread=False)
             time.sleep(0.03)
+        robot.update_kp_kd(kp=robot_default_kp * args.bilateral_kp, kd=np.ones(6) * 0.0)
 
     synchronized = False
     prev_button1_pressed = False
     frozen = False
+    frozen_joint_pos = None
     while True:
         current_joint_pos, current_button = robot.get_info()
         if current_button[0] > 0.5:
@@ -148,6 +168,7 @@ def main(args: Args) -> None:
             if not frozen:
                 print("Freezing arm, stopping episode")
                 client_robot.log_message("end_episode")
+                frozen_joint_pos = np.copy(current_joint_pos)
             else:
                 print("Resuming teleop")
                 client_robot.log_message("start_episode")
@@ -159,10 +180,20 @@ def main(args: Args) -> None:
 
         if frozen:
             robot.update_kp_kd(kp=robot_default_kp, kd=robot_default_kd)
-            robot.command_joint_pos(current_follower_joint_pos[:6])
+            robot.command_joint_pos(frozen_joint_pos[:6])
 
         elif synchronized:
-            client_robot.command_joint_pos(current_joint_pos)
+            gripper = current_joint_pos[6]
+            tcp_pose = _robot.get_tcp_pose()
+            offset_transform = np.array([
+                [0, 1, 0],
+                [1, 0, 0],
+                [0, 0, -1]
+            ])
+            #offset_transform = np.eye(3)
+            tcp_pose[:3, :3] = tcp_pose[:3, :3] @ offset_transform.T
+            #client_robot.command_joint_pos(current_joint_pos)
+            client_robot.command_tcp_pose(tcp_pose, gripper)
             # this will set the bilateral force in joint space proportional to the bilateral kp
             robot.command_joint_pos(current_follower_joint_pos[:6])
         robot._robot.update(separate_thread=False)
