@@ -479,16 +479,17 @@ class MotorChainRobot(Robot):
             self.motor_chain.start_thread()
         self._update_joint_state(motor_torques, joint_commands)
         if self.logfile is not None:
+            joint_target = self.remapper.to_command_joint_pos_space(joint_commands.pos).tolist()
             data = {
                 "time": time.time_ns(),
                 "joint.pos": joint_state.pos.tolist(),
-                "joint.target": self.remapper.to_command_joint_pos_space(joint_commands.pos).tolist(),
+                "joint.target": joint_target,
                 # Add one entry, for the gripper
                 "ee.pos": flatten_pose(cur_pose).tolist() + [float(joint_state.pos[-1])]
             }
             if ee_command:
                 # Add one entry, for the gripper
-                data['ee.target'] = flatten_pose(_commands.target_pose).tolist() + [float(joint_commands.pos[-1])]
+                data['ee.target'] = flatten_pose(_commands.target_pose).tolist() + [joint_target[-1]]
             print(json.dumps(data), file=self.logfile)
 
     def _update_joint_state(
