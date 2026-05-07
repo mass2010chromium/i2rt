@@ -96,7 +96,7 @@ def flatten_pose(pose_mat):
     """
     q = np.zeros(4)
     mujoco.mju_mat2Quat(q, pose_mat[:3, :3].flatten())
-    return np.concatenate([q, pose_mat[:3, 3])
+    return np.concatenate([q, pose_mat[:3, 3]])
 
 class MotorChainRobot(Robot):
     """A generic Robot protocol."""
