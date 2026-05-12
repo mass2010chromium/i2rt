@@ -3,6 +3,7 @@
 function main() {
     updateImage('cam1_latest.png', 'cam1', 1000);
     updateImage('cam2_latest.png', 'cam2', 1000);
+    updateImage('shuffle.png', 'shuffle', 1000);
 }
 function updateImage(file, name, rate) {
     obj = document.getElementById(name); // Get the image element by its name
@@ -15,4 +16,5 @@ function updateImage(file, name, rate) {
 <body onload="main();">
 <img id="cam1" src="cam1_latest.png"/>
 <img id="cam2" src="cam2_latest.png"/>
+<img id="shuffle" src="shuffle.png"/>
 </html>

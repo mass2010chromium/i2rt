@@ -2,8 +2,11 @@ import glob
 import json
 import sys
 
+import cv2
 import numpy as np
 import scipy
+import torch
+
 import tqdm
 
 ACTION_MODE = "ee" #"joint"
@@ -28,7 +31,7 @@ control_messages = [
 ]
 
 observation_keys = {
-    "joint": ('joint.pos', 'joint.target')
+    "joint": ('joint.pos', 'joint.target'),
     "ee": ('ee.pos', 'ee.target')
 }
 
@@ -43,8 +46,8 @@ for fname in robot_data_files:
             try:
                 data = json.loads(line)
                 state_observation_timestamps.append(data['time'])
-                state_observation.append(data[observation_key])
-                state_target.append(data[target_key])
+                state_observation.append(np.array(data[observation_key]))
+                state_target.append(np.array(data.get(target_key, np.zeros(8))))
             except:
                 print(f"{fname}: Could not parse line: '{line}'")
                 continue
@@ -97,13 +100,23 @@ dataset = LeRobotDataset.create(
     features={
         "image": {
             "dtype": "video",
-            "shape": (3, 224, 224),  # (Channels, Height, Width)
+            "shape": (3, 480, 640),  # (Channels, Height, Width)
             "names": ["color"],
         },
         "wrist_image": {
             "dtype": "video",
-            "shape": (3, 224, 224),  # (Channels, Height, Width)
+            "shape": (3, 480, 640),  # (Channels, Height, Width)
             "names": ["color"],
+        },
+        "depth": {
+            "dtype": "uint16",
+            "shape": (480, 640),
+            "names": ["raw"],
+        },
+        "wrist_depth": {
+            "dtype": "uint16",
+            "shape": (480, 640),
+            "names": ["raw"],
         },
         "state": {
             "dtype": "float32",
@@ -125,7 +138,7 @@ event_idx = first_episode
 cur_time = image_timestamps[video_index]
 
 import torchvision
-resize_transform = torchvision.transforms.Resize((224, 224),
+resize_transform = torchvision.transforms.Resize((480, 640),
     interpolation=torchvision.transforms.InterpolationMode.BILINEAR)
 def read_image_torch(image_path):
     img = torchvision.io.decode_image(image_path, mode=torchvision.io.ImageReadMode.RGB)
@@ -156,11 +169,14 @@ while True:
     while cur_time < next_event_time:
         cur = state_observation_interpolated[video_index].astype(np.float32)
         target = state_target_interpolated[video_index].astype(np.float32)
-        action = np.array([*(target[:6] - cur[:6]), target[6]], dtype=np.float32)
+        # Assume gripper is last
+        action = np.array([*(target[:-1] - cur[:-1]), target[7]], dtype=np.float32)
         dataset.add_frame({
             "image": read_image_torch(f"{out_dir}/images/cam1_{video_index}.png"),
             "wrist_image": read_image_torch(f"{out_dir}/images/cam2_{video_index}.png"),
-            "state": cur_q,
+            "depth": torch.tensor(cv2.imread(f"{out_dir}/images/cam1_depth_{video_index}.tiff", cv2.IMREAD_UNCHANGED), dtype=torch.uint16),
+            "wrist_depth": torch.tensor(cv2.imread(f"{out_dir}/images/cam1_depth_{video_index}.tiff", cv2.IMREAD_UNCHANGED), dtype=torch.uint16),
+            "state": cur,
             "actions": action,
             "task": episode_task
         })
