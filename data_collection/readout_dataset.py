@@ -1,3 +1,4 @@
+import sys
 import time
 
 import numpy as np
@@ -31,10 +32,11 @@ def write_text_to_frame(frame, text):
 
     return frame
 
-repo_id = "local/run"
+ds_name = sys.argv[1]
+repo_id = f"local/{ds_name}"
 
 batch_size = 32
-dataset = LeRobotDataset(repo_id, root="hf/run")
+dataset = LeRobotDataset(repo_id, root=f"hf/{ds_name}")
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=8)
 
 i = 0
@@ -52,8 +54,8 @@ print(f"{len(dataset)} frames.")
 for batch in dataloader:
     if i >= k:
         break
-    gripper_min = min(gripper_min, min(batch['actions'][:, 6]))
-    gripper_max = max(gripper_max, max(batch['actions'][:, 6]))
+    gripper_min = min(gripper_min, min(batch['actions'][:, -1]))
+    gripper_max = max(gripper_max, max(batch['actions'][:, -1]))
     for j, (episode_idx, img) in enumerate(zip(batch['episode_index'], batch['image'])):
         episode_idx = int(episode_idx)
         if episode_idx not in episodes_counted:
@@ -73,4 +75,4 @@ for batch in dataloader:
         break
 
 print(task_dist)
-mediapy.write_video("episode.mp4", images)
+mediapy.write_video(f"{ds_name}.mp4", images)
