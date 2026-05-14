@@ -16,7 +16,8 @@ print("Done.")
 
 pipeline = rs.pipeline()  # Overhead
 config = rs.config()
-config.enable_device('346522076629')
+config.enable_device('346522076629')  # Overhead
+#config.enable_device('348122070940')    # Wrist
 config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
 config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
 cfg = pipeline.start(config)
@@ -31,12 +32,6 @@ with open("intrinsics.json", "w") as outfile:
         "fy": intr.fy
     }, outfile)
 
-#pipeline = rs.pipeline()  # Wrist
-#config = rs.config()
-#config.enable_device('348122070940')
-#config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
-#config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
-#pipeline.start(config)
 
 while True:
     frames = pipeline.wait_for_frames()

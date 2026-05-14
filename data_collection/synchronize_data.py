@@ -1,3 +1,10 @@
+import glob
+import json
+import re
+
+import cv2
+import numpy as np
+import scipy
 
 class SyncData:
     def __init__(self, out_dir: str, action_mode: str = "ee"):
@@ -91,6 +98,6 @@ class SyncData:
 
     def get_images(self, index: int, key: str = "cam1"):
         return {
-            "rgb": cv2.imread(f"{self.out_dir}/images/{key}_{index}.tiff", cv2.IMREAD_UNCHANGED)
+            "rgb": cv2.imread(f"{self.out_dir}/images/{key}_{index}.png", cv2.IMREAD_UNCHANGED),
             "depth": cv2.imread(f"{self.out_dir}/images/{key}_depth_{index}.tiff", cv2.IMREAD_UNCHANGED)
         }

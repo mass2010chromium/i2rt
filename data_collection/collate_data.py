@@ -21,9 +21,9 @@ sync_data = data_loader.get_synchronized_data()
 image_timestamps = sync_data['image_timestamps']
 states = sync_data['state']
 targets = sync_data['target']
-event_timestamps = sync_data['event_timestamps']
+event_timestamps = sync_data['event_times']
 event_text = sync_data['events']
-first_episode = sync_data['first_episoe']
+first_episode = sync_data['first_episode']
 n_episodes = sync_data['num_episodes']
 
 print("Parsed metadata files")
