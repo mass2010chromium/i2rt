@@ -61,8 +61,8 @@ while True:
     cv2.imwrite(f"{out_path}/cam1_{j}.png", np.asanyarray(color_frame_1.get_data()))
     cv2.imwrite(f"{out_path}/cam2_{j}.png", np.asanyarray(color_frame_2.get_data()))
     depth1 = np.asanyarray(depth_frame_1.get_data())
-    cv2.imwrite(f"{out_path}/cam1_depth_{j}.tiff", depth1)
-    cv2.imwrite(f"{out_path}/cam2_depth_{j}.tiff", np.asanyarray(depth_frame_2.get_data()))
+    #cv2.imwrite(f"{out_path}/cam1_depth_{j}.tiff", depth1)
+    #cv2.imwrite(f"{out_path}/cam2_depth_{j}.tiff", np.asanyarray(depth_frame_2.get_data()))
     #readback = cv2.imread(f"{out_path}/cam1_depth_{j}.tiff", cv2.IMREAD_UNCHANGED)
     print(cur_time, file=meta_file, flush=True)
     i += 1

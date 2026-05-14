@@ -25,6 +25,7 @@ event_timestamps = sync_data['event_times']
 event_text = sync_data['events']
 first_episode = sync_data['first_episode']
 n_episodes = sync_data['num_episodes']
+control_messages = SyncData.CONTROL_MESSAGES
 
 print("Parsed metadata files")
 print(f"{len(image_timestamps)} images, {n_episodes} episodes")
@@ -53,25 +54,25 @@ dataset = LeRobotDataset.create(
             "shape": (3, 480, 640),  # (Channels, Height, Width)
             "names": ["color"],
         },
-        "depth": {
-            "dtype": "uint16",
-            "shape": (480, 640),
-            "names": ["raw"],
-        },
-        "wrist_depth": {
-            "dtype": "uint16",
-            "shape": (480, 640),
-            "names": ["raw"],
-        },
+        # "depth": {
+        #     "dtype": "uint16",
+        #     "shape": (480, 640),
+        #     "names": ["raw"],
+        # },
+        # "wrist_depth": {
+        #     "dtype": "uint16",
+        #     "shape": (480, 640),
+        #     "names": ["raw"],
+        # },
         "state": {
             "dtype": "float32",
-            "shape": state_observation[0].shape,
+            "shape": states[0].shape,
             #"names": ["joint_1", "joint_2", "joint_3", "joint_4", "joint_5", "joint_6", "gripper"],
             "names": ["q_1", "q_2", "q_3", "q_4", "x", "y", "z", "gripper"],
         },
         "actions": {
             "dtype": "float32",
-            "shape": state_target[0].shape,
+            "shape": targets[0].shape,
             "names": ["q_1", "q_2", "q_3", "q_4", "x", "y", "z", "gripper"],
         },
     },
@@ -119,8 +120,8 @@ while True:
         dataset.add_frame({
             "image": read_image_torch(f"{out_dir}/images/cam1_{video_index}.png"),
             "wrist_image": read_image_torch(f"{out_dir}/images/cam2_{video_index}.png"),
-            "depth": torch.tensor(cv2.imread(f"{out_dir}/images/cam1_depth_{video_index}.tiff", cv2.IMREAD_UNCHANGED), dtype=torch.uint16),
-            "wrist_depth": torch.tensor(cv2.imread(f"{out_dir}/images/cam1_depth_{video_index}.tiff", cv2.IMREAD_UNCHANGED), dtype=torch.uint16),
+            #"depth": torch.tensor(cv2.imread(f"{out_dir}/images/cam1_depth_{video_index}.tiff", cv2.IMREAD_UNCHANGED), dtype=torch.uint16),
+            #"wrist_depth": torch.tensor(cv2.imread(f"{out_dir}/images/cam1_depth_{video_index}.tiff", cv2.IMREAD_UNCHANGED), dtype=torch.uint16),
             "state": cur,
             "actions": action,
             "task": episode_task

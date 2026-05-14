@@ -11,6 +11,12 @@ class SyncData:
         self.out_dir = out_dir
         self.action_mode = action_mode
 
+    CONTROL_MESSAGES = [
+        "start_episode",
+        "end_episode",
+        "cancel"
+    ]
+
     def get_synchronized_data(self):
         """
         Read and synchronize the joint and control data according to image frame timestamps.
@@ -30,11 +36,7 @@ class SyncData:
         event_timestamps = []
         event_text = []
 
-        control_messages = [
-            "start_episode",
-            "end_episode",
-            "cancel"
-        ]
+        control_messages = SyncData.CONTROL_MESSAGES
 
         observation_keys = {
             "joint": ('joint.pos', 'joint.target'),
