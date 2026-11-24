@@ -49,6 +49,7 @@ if not args.skip:
     sync_data = data_loader.get_synchronized_data()
     ee_poses = sync_data['state']
 
+    print(sync_data['first_episode'])
     first_episode_start = sync_data['event_times'][sync_data['first_episode']]
     start_index = np.searchsorted(sync_data['image_timestamps'], first_episode_start)
 
